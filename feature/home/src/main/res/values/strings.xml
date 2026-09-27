@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_undo">Undo</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="greeting_morning">Good morning ☀️</string>
+    <string name="greeting_afternoon">Good afternoon 🌤️</string>
+    <string name="greeting_evening">Good evening 🌆</string>
+    <string name="greeting_night">Good night 🌙</string>
+    <string name="home_search">Search</string>
+    <string name="home_settings">Settings</string>
+    <string name="home_new_task">New task</string>
+    <string name="home_focus_now">Focus now</string>
+    <string name="home_today">Today</string>
+    <string name="home_all_tasks">All tasks</string>
+    <string name="home_my_lists">My lists</string>
+    <string name="home_edit_list">Rename, color &amp; icon</string>
+    <string name="home_delete_list">Delete list</string>
+    <plurals name="home_delete_confirm">
+        <item quantity="one">Delete \'%1$s\' and its %2$d task?</item>
+        <item quantity="other">Delete \'%1$s\' and its %2$d tasks?</item>
+    </plurals>
+    <string name="home_health_delayed">Reminders may be delayed</string>
+    <string name="home_health_notifications">Notifications are off — you won\'t be nudged</string>
+    <string name="home_paused_until">Reminders paused until %1$s</string>
+    <string name="home_paused_forever">Reminders paused until you resume</string>
+    <string name="home_resume">Resume</string>
+    <string name="home_empty">Your mind, unburdened. Add your first task.</string>
+    <string name="home_completed">Completed \'%1$s\'</string>
+    <string name="home_list_deleted">List \'%1$s\' deleted</string>
+    <string name="home_last_list">The last list can\'t be deleted</string>
+    <string name="home_invalid_name">Enter a list name (up to 40 characters)</string>
+</resources>
