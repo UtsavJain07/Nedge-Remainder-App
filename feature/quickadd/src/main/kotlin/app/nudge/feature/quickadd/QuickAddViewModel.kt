@@ -6,7 +6,11 @@ import app.nudge.core.domain.repository.ListRepository
 import app.nudge.core.domain.repository.SettingsRepository
 import app.nudge.core.domain.repository.TaskRepository
 import app.nudge.core.domain.usecase.CreateTaskUseCase
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import app.nudge.core.model.Priority
+import app.nudge.core.model.Task
 import app.nudge.core.model.ReminderCadence
 import app.nudge.core.model.ReminderSettings
 import app.nudge.core.model.TaskDraft
@@ -29,17 +33,13 @@ import javax.inject.Inject
 
 /** Form state of the Quick Add sheet (03 §3.4). */
 data class QuickAddForm(
-    val title: String = "",
     val priority: Priority = Priority.NONE,
     val dueDate: LocalDate? = null,
     val dueTime: LocalTime? = null,
     val cadenceOverride: ReminderCadence? = null,
-    val notes: String = "",
     val showNotes: Boolean = false,
     val listId: String? = null,
-) {
-    val canSave: Boolean get() = title.isNotBlank()
-}
+)
 
 data class QuickAddUiState(
     val form: QuickAddForm = QuickAddForm(),
@@ -71,6 +71,12 @@ class QuickAddViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val form = MutableStateFlow(QuickAddForm())
+
+    /** Text lives in snapshot state so fast typing never loses characters (no async round-trip). */
+    var title by mutableStateOf("")
+        private set
+    var notes by mutableStateOf("")
+        private set
     private val parentTitle = MutableStateFlow<String?>(null)
     private var parentId: String? = null
     private var ready = MutableStateFlow(false)
@@ -97,7 +103,9 @@ class QuickAddViewModel @Inject constructor(
         }
     }
 
-    fun onTitle(value: String) = form.update { it.copy(title = value.take(app.nudge.core.model.Task.TITLE_MAX)) }
+    fun onTitle(value: String) {
+        title = value.take(Task.TITLE_MAX)
+    }
 
     fun onPriority(p: Priority) = form.update { it.copy(priority = p) }
 
@@ -107,7 +115,9 @@ class QuickAddViewModel @Inject constructor(
 
     fun onCadence(c: ReminderCadence?) = form.update { it.copy(cadenceOverride = c) }
 
-    fun onNotes(value: String) = form.update { it.copy(notes = value) }
+    fun onNotes(value: String) {
+        notes = value.take(Task.NOTES_MAX)
+    }
 
     fun toggleNotes() = form.update { it.copy(showNotes = !it.showNotes) }
 
@@ -115,25 +125,29 @@ class QuickAddViewModel @Inject constructor(
     fun save() {
         val f = form.value
         val listId = f.listId ?: return
-        if (!f.canSave) return
+        val t = title
+        val n = notes
+        if (t.isBlank()) return
         viewModelScope.launch {
             runCatching {
                 createTask(
                     TaskDraft(
                         listId = listId,
                         parentId = parentId,
-                        title = f.title,
+                        title = t,
                         priority = f.priority,
                         cadenceOverride = f.cadenceOverride,
-                        notes = f.notes,
+                        notes = n,
                         dueDate = f.dueDate,
                         dueTime = f.dueTime,
                         position = userSettings.newTaskPosition,
                     ),
                 )
             }.onSuccess {
-                _effects.send(QuickAddEffect.Added(f.title.trim()))
+                if (title == t) title = ""
+                notes = ""
                 form.update { QuickAddForm(listId = it.listId, priority = userSettings.defaultPriority) }
+                _effects.send(QuickAddEffect.Added(t.trim()))
             }.onFailure {
                 _effects.send(QuickAddEffect.Error)
             }

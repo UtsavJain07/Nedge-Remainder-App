@@ -91,6 +91,7 @@ internal fun ListPage(
     onOpenDetails: (String) -> Unit,
     onAddSubtask: (String) -> Unit,
     onDraggingChange: (Boolean) -> Unit,
+    onListDeleted: (app.nudge.core.model.UndoSnapshot, String) -> Unit,
     contentPadding: PaddingValues,
 ) {
     LaunchedEffect(listId) { vm.start(listId) }
@@ -117,7 +118,7 @@ internal fun ListPage(
                 ) { vm.completeParent(e.parentId) }
                 is ListEffect.Message -> snackbar.show(e.message.resolve(context))
                 ListEffect.AllDone -> confetti++
-                is ListEffect.ListDeleted -> Unit // handled by the screen
+                is ListEffect.ListDeleted -> onListDeleted(e.snapshot, e.name)
             }
         }
     }

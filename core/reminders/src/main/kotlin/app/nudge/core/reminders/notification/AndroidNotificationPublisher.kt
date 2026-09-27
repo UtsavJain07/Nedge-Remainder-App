@@ -104,10 +104,14 @@ class AndroidNotificationPublisher @Inject constructor(
     override fun updateGroupSummary() {
         val system = context.getSystemService(NotificationManager::class.java) ?: return
         val active = system.activeNotifications.filter { it.notification.group == GROUP_KEY && it.id != SUMMARY_ID }
-        if (active.size < 2 || !canPost()) {
+        // NOTE (07 §7.2): cancelling a summary also cancels its children on Android, so the summary is
+        // only removed once no reminders remain; with one left it is kept (the shade shows it un-grouped).
+        if (active.isEmpty()) {
             nm.cancel(SUMMARY_ID)
             return
         }
+        val summaryShowing = system.activeNotifications.any { it.id == SUMMARY_ID }
+        if (!canPost() || (active.size < 2 && !summaryShowing)) return
         val titles = active.mapNotNull { it.notification.extras.getCharSequence(NotificationCompat.EXTRA_TITLE) }
         val headline = context.resources.getQuantityString(R.plurals.notif_summary_title, active.size, active.size)
         val style = NotificationCompat.InboxStyle().setBigContentTitle(headline)

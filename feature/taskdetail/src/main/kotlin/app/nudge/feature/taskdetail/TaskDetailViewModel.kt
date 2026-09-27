@@ -2,6 +2,9 @@ package app.nudge.feature.taskdetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import app.nudge.core.common.ApplicationScope
 import app.nudge.core.common.Clock
 import app.nudge.core.domain.repository.ListRepository
@@ -115,8 +118,10 @@ class TaskDetailViewModel @Inject constructor(
     val effects: Flow<TaskDetailEffect> = _effects.receiveAsFlow()
 
     /** Local drafts so typing is never clobbered by DB emissions. */
-    val titleDraft = MutableStateFlow("")
-    val notesDraft = MutableStateFlow("")
+    var titleDraft by mutableStateOf("")
+        private set
+    var notesDraft by mutableStateOf("")
+        private set
     private var draftsFor: String? = null
     private var titleJob: Job? = null
     private var notesJob: Job? = null
@@ -164,15 +169,15 @@ class TaskDetailViewModel @Inject constructor(
         viewModelScope.launch {
             val t = tasks.get(id) ?: return@launch
             draftsFor = id
-            titleDraft.value = t.title
-            notesDraft.value = t.notes
+            titleDraft = t.title
+            notesDraft = t.notes
         }
     }
 
     private fun id(): String? = taskId.value
 
     fun onTitle(value: String) {
-        titleDraft.value = value.take(Task.TITLE_MAX)
+        titleDraft = value.take(Task.TITLE_MAX)
         titleJob?.cancel()
         titleJob = viewModelScope.launch {
             delay(AUTOSAVE_MS)
@@ -181,7 +186,7 @@ class TaskDetailViewModel @Inject constructor(
     }
 
     fun onNotes(value: String) {
-        notesDraft.value = value.take(Task.NOTES_MAX)
+        notesDraft = value.take(Task.NOTES_MAX)
         notesJob?.cancel()
         notesJob = viewModelScope.launch {
             delay(AUTOSAVE_MS)
@@ -191,13 +196,13 @@ class TaskDetailViewModel @Inject constructor(
 
     private suspend fun saveTitle() {
         val id = draftsFor ?: return
-        val t = titleDraft.value.trim()
+        val t = titleDraft.trim()
         if (t.isNotEmpty()) runCatching { updateTask(id, TaskPatch(title = t)) }
     }
 
     private suspend fun saveNotes() {
         val id = draftsFor ?: return
-        runCatching { updateTask(id, TaskPatch(notes = notesDraft.value)) }
+        runCatching { updateTask(id, TaskPatch(notes = notesDraft)) }
     }
 
     /** Persist pending drafts immediately (sheet closing / switching task). */

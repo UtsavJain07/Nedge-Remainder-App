@@ -96,7 +96,7 @@ fun QuickAddSheet(
     val snackbar = LocalSnackbar.current
     val errorText = stringResource(R.string.quickadd_error)
     var confirmDiscard by remember { mutableStateOf(false) }
-    val hasText by rememberUpdatedState(form.title.isNotBlank())
+    val hasText by rememberUpdatedState(viewModel.title.isNotBlank())
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true,
         confirmValueChange = { value ->
@@ -129,7 +129,7 @@ fun QuickAddSheet(
     LaunchedEffect(state.ready) { if (state.ready) runCatching { focus.requestFocus() } }
 
     fun dismiss() {
-        if (form.title.isNotBlank()) {
+        if (viewModel.title.isNotBlank()) {
             confirmDiscard = true
         } else {
             scope.launch { sheetState.hide() }.invokeOnCompletion { onDismiss() }
@@ -137,7 +137,7 @@ fun QuickAddSheet(
     }
 
     ModalBottomSheet(
-        onDismissRequest = onDismiss,
+        onDismissRequest = { if (hasText) confirmDiscard = true else onDismiss() },
         sheetState = sheetState,
         modifier = Modifier.testTag("quick_add_sheet"),
     ) {
@@ -166,8 +166,16 @@ fun QuickAddSheet(
             }
             Box {
                 TextField(
-                    value = form.title,
-                    onValueChange = viewModel::onTitle,
+                    value = viewModel.title,
+                    onValueChange = { value ->
+                        // Enter (soft or hardware) saves and keeps the sheet open (FR-10).
+                        if (value.contains('\n')) {
+                            viewModel.onTitle(value.replace("\n", ""))
+                            viewModel.save()
+                        } else {
+                            viewModel.onTitle(value)
+                        }
+                    },
                     placeholder = { Text(stringResource(R.string.quickadd_placeholder)) },
                     singleLine = false,
                     maxLines = 4,
@@ -227,7 +235,7 @@ fun QuickAddSheet(
             }
             if (form.showNotes) {
                 OutlinedTextField(
-                    value = form.notes,
+                    value = viewModel.notes,
                     onValueChange = viewModel::onNotes,
                     placeholder = { Text(stringResource(R.string.quickadd_notes_placeholder)) },
                     minLines = 2,
@@ -236,7 +244,7 @@ fun QuickAddSheet(
                 )
             }
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                Button(onClick = viewModel::save, enabled = form.canSave, modifier = Modifier.testTag("quick_add_save")) {
+                Button(onClick = viewModel::save, enabled = viewModel.title.isNotBlank(), modifier = Modifier.testTag("quick_add_save")) {
                     Text(stringResource(R.string.quickadd_save))
                 }
             }

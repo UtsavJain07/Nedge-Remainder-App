@@ -150,16 +150,6 @@ private fun ListScreenContent(
             detailTaskId = route.openTaskId
         }
     }
-    LaunchedEffect(currentVm) {
-        currentVm.effects.collect { e ->
-            if (e is ListEffect.ListDeleted) {
-                onBack()
-                snackbar.show(context.getString(R.string.list_deleted_list, e.name), undo, SnackbarDispatcher.DELETE_MS) {
-                    currentVm.undo(e.snapshot)
-                }
-            }
-        }
-    }
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbar.hostState) },
@@ -272,6 +262,12 @@ private fun ListScreenContent(
                 onOpenDetails = { detailTaskId = it },
                 onAddSubtask = { quickAdd = QuickAddTarget(list.id, it) },
                 onDraggingChange = { dragging = it },
+                onListDeleted = { snapshot, name ->
+                    onBack()
+                    snackbar.show(context.getString(R.string.list_deleted_list, name), undo, SnackbarDispatcher.DELETE_MS) {
+                        vm.undo(snapshot)
+                    }
+                },
                 contentPadding = padding,
             )
         }

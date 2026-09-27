@@ -168,8 +168,8 @@ private fun DetailContent(
     onOpenSubtask: (String) -> Unit,
     onOpenParent: (String) -> Unit,
 ) {
-    val title by vm.titleDraft.collectAsStateWithLifecycle()
-    val notes by vm.notesDraft.collectAsStateWithLifecycle()
+    val title = vm.titleDraft
+    val notes = vm.notesDraft
     val listColor = state.list?.let { Color(it.colorArgb) } ?: MaterialTheme.colorScheme.primary
     var showMenu by remember { mutableStateOf(false) }
     var showMovePicker by remember { mutableStateOf(false) }
