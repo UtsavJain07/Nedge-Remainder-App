@@ -187,7 +187,7 @@ fun ColorSwatchPicker(colors: List<Int>, names: List<String>, selected: Int, onS
                     Box(
                         Modifier
                             .size(48.dp)
-                            .border(ringWidth, c, CircleShape)
+                            .border(ringWidth.coerceAtLeast(0.dp), c, CircleShape)
                             .padding(5.dp)
                             .clip(CircleShape)
                             .background(c)

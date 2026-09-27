@@ -160,12 +160,13 @@ fun TaskRow(
     val a11y = rowDescription(ui, today)
     val completeLabel = stringResource(if (ui.checked) R.string.a11y_mark_not_completed else R.string.a11y_mark_completed)
     val stateText = stringResource(if (ui.checked) R.string.state_completed else R.string.state_not_completed)
-    val shape = androidx.compose.foundation.shape.RoundedCornerShape(corner)
+    // Springs overshoot (A5); negative corner / elevation values crash, so clamp.
+    val shape = androidx.compose.foundation.shape.RoundedCornerShape(corner.coerceAtLeast(0.dp))
 
     Surface(
         color = container,
         shape = shape,
-        shadowElevation = elevation,
+        shadowElevation = elevation.coerceAtLeast(0.dp),
         modifier = modifier
             .fillMaxWidth()
             .shake(if (drag.rejectTick > 0) drag.rejectTick else 0)
@@ -192,7 +193,7 @@ fun TaskRow(
                     if (accessibilityActions.isNotEmpty()) customActions = accessibilityActions
                 }
                 .clickable(onClick = onTap)
-                .padding(start = indent + Spacing.xs, end = Spacing.xs, top = Spacing.xxs, bottom = Spacing.xxs),
+                .padding(start = indent.coerceAtLeast(0.dp) + Spacing.xs, end = Spacing.xs, top = Spacing.xxs, bottom = Spacing.xxs),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             NudgeCheckbox(
