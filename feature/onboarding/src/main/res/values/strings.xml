@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_start">Start</string>
+    <string name="onboarding_page_of">Page %1$d of %2$d</string>
+    <string name="onboarding_welcome_title">Never forget a task again</string>
+    <string name="onboarding_welcome_body">Nudge keeps reminding you until it\'s done.</string>
+    <string name="onboarding_how_title">How nudges work</string>
+    <string name="onboarding_how_caption">You can change these anytime.</string>
+    <string name="onboarding_cadence_row">%1$s → %2$s</string>
+    <string name="onboarding_cadence_urgent">every 10 min</string>
+    <string name="onboarding_cadence_high">every hour</string>
+    <string name="onboarding_cadence_medium">every 3 hours</string>
+    <string name="onboarding_cadence_low">8 AM &amp; 9 PM</string>
+    <string name="onboarding_permissions_title">Two quick permissions</string>
+    <string name="onboarding_notifications_title">Notifications</string>
+    <string name="onboarding_notifications_body">So we can nudge you</string>
+    <string name="onboarding_exact_title">Precise timing</string>
+    <string name="onboarding_exact_body">So nudges arrive on time, even when your phone sleeps</string>
+    <string name="onboarding_allow">Allow</string>
+    <string name="onboarding_granted">Allowed</string>
+</resources>

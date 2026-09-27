@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_back">Back</string>
+    <string name="search_placeholder">Search tasks</string>
+    <string name="search_clear">Clear search</string>
+    <string name="search_hint">Search titles and notes across all your lists</string>
+    <string name="search_no_results">No tasks match \'%1$s\'</string>
+    <string name="search_open_in_list">Open in list</string>
+    <string name="search_completed">Completed</string>
+</resources>

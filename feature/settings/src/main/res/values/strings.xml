@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_back">Back</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_ok">OK</string>
+    <string name="action_close">Close</string>
+    <string name="action_fix">Fix</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="settings_error">Something went wrong. Try again.</string>
+
+    <!-- Appearance (FR-100) -->
+    <string name="settings_section_appearance">Appearance</string>
+    <string name="settings_theme">Theme</string>
+    <string name="settings_theme_system">System</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_dark">Dark</string>
+    <string name="settings_dynamic_color">Dynamic color</string>
+    <string name="settings_dynamic_color_summary">Use colors from your wallpaper</string>
+    <string name="settings_pure_black">Pure black dark mode</string>
+    <string name="settings_pure_black_summary">True black backgrounds in dark theme</string>
+
+    <!-- Reminders (FR-101) -->
+    <string name="settings_section_reminders">Reminders</string>
+    <string name="settings_reminders">Reminders</string>
+    <string name="settings_reminders_summary">Cadences, check-in times, quiet hours, pause</string>
+    <string name="settings_section_cadence">Default reminders by priority</string>
+    <string name="settings_section_checkins">Check-in times</string>
+    <string name="settings_morning">Morning check-in</string>
+    <string name="settings_evening">Evening check-in</string>
+    <string name="settings_section_quiet">Quiet hours</string>
+    <string name="settings_quiet_hours">Quiet hours</string>
+    <string name="settings_quiet_hours_summary">No nudges while you sleep</string>
+    <string name="settings_quiet_start">Starts</string>
+    <string name="settings_quiet_end">Ends</string>
+    <string name="settings_urgent_ignores_quiet">Urgent tasks ignore quiet hours</string>
+    <string name="settings_section_snooze_pause">Snooze &amp; pause</string>
+    <string name="settings_default_snooze">Default snooze</string>
+    <string name="settings_snooze_minutes">%1$d min</string>
+    <plurals name="settings_snooze_hours">
+        <item quantity="one">%1$d hour</item>
+        <item quantity="other">%1$d hours</item>
+    </plurals>
+    <string name="settings_pause_all">Pause all reminders</string>
+    <string name="settings_pause_all_summary">Take a break from nudges</string>
+    <string name="settings_pause_1h">For 1 hour</string>
+    <string name="settings_pause_tomorrow">Until tomorrow morning</string>
+    <string name="settings_pause_resume">Until I resume</string>
+    <string name="settings_paused_until">Paused until %1$s</string>
+    <string name="settings_paused_forever">Paused until you resume</string>
+    <string name="settings_resume">Resume</string>
+    <string name="settings_section_reliability">Reliability</string>
+    <string name="settings_sound">Notification sound</string>
+    <string name="settings_sound_summary">Sound, vibration and channels in system settings</string>
+
+    <!-- Behavior (FR-102) -->
+    <string name="settings_section_behavior">Behavior</string>
+    <string name="settings_tap_action">Tap on task</string>
+    <string name="settings_tap_complete">Complete it</string>
+    <string name="settings_tap_details">Open details</string>
+    <string name="settings_new_tasks_at">New tasks at</string>
+    <string name="settings_position_top">Top of the list</string>
+    <string name="settings_position_bottom">Bottom of the list</string>
+    <string name="settings_default_priority">Default priority</string>
+    <string name="settings_haptics">Haptics</string>
+    <string name="settings_confirm_delete">Confirm before delete</string>
+
+    <!-- Data (FR-103) -->
+    <string name="settings_section_data">Data</string>
+    <string name="settings_export">Export backup</string>
+    <string name="settings_export_summary">Save all lists and tasks as a JSON file</string>
+    <string name="settings_export_done">Backup saved</string>
+    <string name="settings_import">Import backup</string>
+    <string name="settings_import_summary">Restore from a Nudge JSON file</string>
+    <string name="settings_import_title">Import backup</string>
+    <string name="settings_import_body">Replace everything with the backup, or merge it with your current tasks?</string>
+    <string name="settings_import_replace">Replace</string>
+    <string name="settings_import_merge">Merge</string>
+    <string name="settings_import_done">Imported %1$d lists and %2$d tasks</string>
+    <string name="settings_import_invalid">This file isn\'t a Nudge backup.</string>
+    <string name="settings_import_unsupported">This backup was made by a newer version of Nudge</string>
+    <string name="settings_delete_all">Delete all data</string>
+    <string name="settings_delete_all_title">Delete all data?</string>
+    <string name="settings_delete_all_body">All lists, tasks and settings will be erased. This can\'t be undone. Type %1$s to confirm.</string>
+    <string name="settings_delete_all_hint">Type %1$s</string>
+    <string name="settings_delete_all_word" translatable="false">DELETE</string>
+    <string name="settings_delete_all_confirm">Delete everything</string>
+    <string name="settings_delete_all_done">All data deleted</string>
+
+    <!-- About (FR-104) -->
+    <string name="settings_section_about">About</string>
+    <string name="settings_version">Version</string>
+    <string name="settings_licenses">Open-source licenses</string>
+    <string name="settings_privacy">Privacy</string>
+    <string name="settings_privacy_statement">Your data never leaves your device. Nudge has no accounts, no analytics and no internet access.</string>
+    <string name="license_apache">Apache License 2.0</string>
+    <string name="license_mit">MIT License</string>
+    <string name="license_ofl">SIL Open Font License 1.1</string>
+    <string name="lib_androidx" translatable="false">AndroidX</string>
+    <string name="lib_compose" translatable="false">Jetpack Compose</string>
+    <string name="lib_material3" translatable="false">Material 3</string>
+    <string name="lib_room" translatable="false">Room</string>
+    <string name="lib_datastore" translatable="false">DataStore</string>
+    <string name="lib_workmanager" translatable="false">WorkManager</string>
+    <string name="lib_hilt" translatable="false">Hilt / Dagger</string>
+    <string name="lib_kotlin" translatable="false">Kotlin, kotlinx.coroutines, kotlinx.serialization, kotlinx.collections.immutable</string>
+    <string name="lib_materialkolor" translatable="false">MaterialKolor</string>
+    <string name="lib_reorderable" translatable="false">Reorderable</string>
+    <string name="lib_timber" translatable="false">Timber</string>
+    <string name="lib_font" translatable="false">Plus Jakarta Sans</string>
+
+    <!-- Reminder health (FR-91, 07 §10) -->
+    <string name="health_title">Reminder health</string>
+    <string name="health_all_good">All good</string>
+    <plurals name="health_issues">
+        <item quantity="one">%1$d issue</item>
+        <item quantity="other">%1$d issues</item>
+    </plurals>
+    <string name="health_header_ok">✅ All good</string>
+    <plurals name="health_header_issues">
+        <item quantity="one">⚠ %1$d issue</item>
+        <item quantity="other">⚠ %1$d issues</item>
+    </plurals>
+    <string name="health_notifications_ok">Notifications allowed</string>
+    <string name="health_notifications_issue">Notifications are off — you won\'t be nudged</string>
+    <string name="health_exact_ok">Precise alarms allowed</string>
+    <string name="health_exact_issue">Precise alarms not allowed — nudges may be late</string>
+    <string name="health_channels_ok">Reminder channels enabled</string>
+    <string name="health_channels_issue">Turned off: %1$s</string>
+    <string name="health_battery_ok">Battery optimization off</string>
+    <string name="health_battery_issue">Battery optimization on — nudges may be delayed</string>
+    <string name="health_oem_tip">%1$s phones may stop apps in the background. Let Nudge run unrestricted.</string>
+    <string name="health_oem_how">How?</string>
+    <string name="health_test_nudge">Send test nudge in %1$d s</string>
+    <string name="health_test_sent">Test nudge coming in %1$d seconds</string>
+    <string name="channel_urgent">Urgent reminders</string>
+    <string name="channel_high">High priority reminders</string>
+    <string name="channel_medium">Medium priority reminders</string>
+    <string name="channel_low">Low priority reminders</string>
+    <string name="channel_due">Due date reminders</string>
+
+    <!-- Debug (07 §11) -->
+    <string name="debug_title">Debug tools</string>
+    <string name="debug_section_engine">Reminder engine</string>
+    <string name="debug_dispatch_now">Dispatch now</string>
+    <string name="debug_dispatched">Dispatched %1$d reminders</string>
+    <string name="debug_next_alarm">Next alarm at</string>
+    <string name="debug_none">None</string>
+    <string name="debug_show_scheduled">Show scheduled reminders</string>
+    <string name="debug_col_title">Task</string>
+    <string name="debug_col_next">Next at</string>
+    <string name="debug_col_kind">Kind</string>
+    <string name="debug_col_count">#</string>
+    <string name="debug_reset_anchors">Reset all anchors</string>
+    <string name="debug_anchors_reset">All anchors reset</string>
+    <string name="debug_section_time">Time travel</string>
+    <string name="debug_current_offset">Clock offset</string>
+    <string name="debug_offset_value">+%1$d min</string>
+    <string name="debug_time_offset">Clock is now +%1$d min</string>
+    <string name="debug_travel_10m">Advance +10 min</string>
+    <string name="debug_travel_1h">Advance +1 h</string>
+    <string name="debug_reset_time">Reset time</string>
+    <string name="debug_time_reset">Clock reset</string>
+    <string name="debug_section_data">Data</string>
+    <string name="debug_demo_data">Load demo data</string>
+    <string name="debug_demo_data_summary">Adds Work, Home and Reading lists with sample tasks</string>
+    <string name="debug_demo_loaded">Added %1$d demo tasks</string>
+</resources>
