@@ -18,6 +18,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -110,7 +111,8 @@ internal fun DebugScreen(onBack: () -> Unit, viewModel: DebugViewModel = hiltVie
     val state by viewModel.state.collectAsStateWithLifecycle()
     val snackbar = LocalSnackbar.current
     val context = LocalContext.current
-    LaunchedEffect(viewModel) { viewModel.messages.collect { snackbar.show(it.resolve(context)) } }
+    val resources = LocalResources.current
+    LaunchedEffect(viewModel) { viewModel.messages.collect { snackbar.show(it.resolve(resources)) } }
     val zone = viewModel.clock.zone()
     val today = viewModel.clock.now().atZone(zone).toLocalDate()
 

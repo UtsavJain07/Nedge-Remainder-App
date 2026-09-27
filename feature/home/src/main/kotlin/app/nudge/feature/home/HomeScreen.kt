@@ -69,7 +69,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
@@ -98,6 +98,7 @@ import app.nudge.core.designsystem.theme.Spacing
 import app.nudge.core.domain.usecase.ListWithStats
 import app.nudge.core.model.SmartViewType
 import app.nudge.core.model.TaskList
+import app.nudge.core.ui.format.currentLocale
 import app.nudge.core.ui.format.formatInstant
 import app.nudge.core.ui.list.ListEditorSheet
 import app.nudge.core.ui.nav.LocalNavAnimatedVisibilityScope
@@ -138,7 +139,7 @@ fun NavGraphBuilder.homeScreen(nav: HomeNavigation) {
 fun HomeScreen(nav: HomeNavigation, viewModel: HomeViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val snackbar = LocalSnackbar.current
-    val context = LocalContext.current
+    val resources = LocalResources.current
     val undo = stringResource(R.string.action_undo)
     var showQuickAdd by rememberSaveable { mutableStateOf(false) }
     var detailTaskId by rememberSaveable { mutableStateOf<String?>(null) }
@@ -153,8 +154,8 @@ fun HomeScreen(nav: HomeNavigation, viewModel: HomeViewModel = hiltViewModel()) 
     LaunchedEffect(viewModel) {
         viewModel.effects.collect { e ->
             when (e) {
-                is HomeEffect.Undo -> snackbar.show(e.message.resolve(context), undo, e.durationMs) { viewModel.undo(e.snapshot) }
-                is HomeEffect.Message -> snackbar.show(e.message.resolve(context))
+                is HomeEffect.Undo -> snackbar.show(e.message.resolve(resources), undo, e.durationMs) { viewModel.undo(e.snapshot) }
+                is HomeEffect.Message -> snackbar.show(e.message.resolve(resources))
             }
         }
     }
@@ -385,7 +386,7 @@ private fun Header(now: Instant, vm: HomeViewModel, nav: HomeNavigation) {
                 )
             }
             Text(
-                DateTimeFormatter.ofPattern("EEEE, d MMMM", Locale.getDefault()).format(zoned),
+                DateTimeFormatter.ofPattern("EEEE, d MMMM", currentLocale()).format(zoned),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )

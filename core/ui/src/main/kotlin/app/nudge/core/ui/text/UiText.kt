@@ -21,9 +21,9 @@ sealed interface UiText {
         is Raw -> value
     }
 
-    fun resolve(context: android.content.Context): String = when (this) {
-        is Res -> context.getString(id, *args.toTypedArray())
-        is Plural -> context.resources.getQuantityString(id, count, *args.toTypedArray())
+    fun resolve(resources: android.content.res.Resources): String = when (this) {
+        is Res -> resources.getString(id, *args.toTypedArray())
+        is Plural -> resources.getQuantityString(id, count, *args.toTypedArray())
         is Raw -> value
     }
 }

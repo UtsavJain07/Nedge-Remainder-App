@@ -48,7 +48,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -97,7 +97,7 @@ internal fun ListPage(
     LaunchedEffect(listId) { vm.start(listId) }
     val state by vm.state.collectAsStateWithLifecycle()
     val model = state.model
-    val context = LocalContext.current
+    val resources = LocalResources.current
     val snackbar = LocalSnackbar.current
     val haptics = rememberNudgeHaptics()
     val undo = stringResource(R.string.action_undo)
@@ -110,13 +110,13 @@ internal fun ListPage(
     LaunchedEffect(vm) {
         vm.effects.collect { e ->
             when (e) {
-                is ListEffect.Undo -> snackbar.show(e.message.resolve(context), undo, e.durationMs) { vm.undo(e.snapshot) }
+                is ListEffect.Undo -> snackbar.show(e.message.resolve(resources), undo, e.durationMs) { vm.undo(e.snapshot) }
                 is ListEffect.AllSubtasksDone -> snackbar.show(
-                    context.getString(R.string.list_all_subtasks_done, e.parentTitle),
+                    resources.getString(R.string.list_all_subtasks_done, e.parentTitle),
                     completeLabel,
                     SnackbarDispatcher.COMPLETE_MS,
                 ) { vm.completeParent(e.parentId) }
-                is ListEffect.Message -> snackbar.show(e.message.resolve(context))
+                is ListEffect.Message -> snackbar.show(e.message.resolve(resources))
                 ListEffect.AllDone -> confetti++
                 is ListEffect.ListDeleted -> onListDeleted(e.snapshot, e.name)
             }
@@ -207,7 +207,7 @@ internal fun ListPage(
                     effectiveCadence = task.effectiveCadence(reminders),
                     completing = task.id in state.completing,
                 )
-                val a11y = accessibilityActions(item, rendered.map { it.first }, dragEnabled, vm, onDelete = { vm.onDelete(task.id, task.title) }, context)
+                val a11y = accessibilityActions(item, rendered.map { it.first }, dragEnabled, vm, onDelete = { vm.onDelete(task.id, task.title) }, resources)
                 val tap = {
                     focusedKey = item.key
                     if (settings.tapAction == TapAction.OPEN_DETAILS) {
@@ -455,7 +455,7 @@ private fun accessibilityActions(
     dragEnabled: Boolean,
     vm: ListPageViewModel,
     onDelete: () -> Unit,
-    context: android.content.Context,
+    resources: android.content.res.Resources,
 ): List<CustomAccessibilityAction> {
     val task = item.task
     val actions = mutableListOf<CustomAccessibilityAction>()
@@ -463,32 +463,32 @@ private fun accessibilityActions(
         val siblings = rows.filter { it.task.parentId == task.parentId && !it.task.isCompleted }
         val i = siblings.indexOfFirst { it.key == item.key }
         if (i > 0) {
-            actions += CustomAccessibilityAction(context.getString(R.string.a11y_move_up)) {
+            actions += CustomAccessibilityAction(resources.getString(R.string.a11y_move_up)) {
                 vm.onMove(MoveOperation.Reorder(task.id, task.parentId, siblings.getOrNull(i - 2)?.key, siblings[i - 1].key))
                 true
             }
         }
         if (i in 0 until siblings.lastIndex) {
-            actions += CustomAccessibilityAction(context.getString(R.string.a11y_move_down)) {
+            actions += CustomAccessibilityAction(resources.getString(R.string.a11y_move_down)) {
                 vm.onMove(MoveOperation.Reorder(task.id, task.parentId, siblings[i + 1].key, siblings.getOrNull(i + 2)?.key))
                 true
             }
         }
         if (task.parentId == null && !item.isParent && i > 0) {
             val prev = siblings[i - 1]
-            actions += CustomAccessibilityAction(context.getString(R.string.a11y_make_subtask_of, prev.task.title)) {
+            actions += CustomAccessibilityAction(resources.getString(R.string.a11y_make_subtask_of, prev.task.title)) {
                 vm.onMove(MoveOperation.Nest(task.id, prev.key), prev.task.title)
                 true
             }
         }
         if (task.parentId != null) {
-            actions += CustomAccessibilityAction(context.getString(R.string.a11y_move_top_level)) {
+            actions += CustomAccessibilityAction(resources.getString(R.string.a11y_move_top_level)) {
                 vm.onMove(MoveOperation.ToTopLevel(task.id))
                 true
             }
         }
     }
-    actions += CustomAccessibilityAction(context.getString(R.string.action_delete)) {
+    actions += CustomAccessibilityAction(resources.getString(R.string.action_delete)) {
         onDelete()
         true
     }

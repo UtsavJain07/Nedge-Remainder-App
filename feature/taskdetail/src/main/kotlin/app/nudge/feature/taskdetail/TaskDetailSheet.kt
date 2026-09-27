@@ -62,7 +62,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -116,7 +116,7 @@ fun TaskDetailSheet(
     LaunchedEffect(currentId) { viewModel.start(currentId) }
     val state by viewModel.state.collectAsStateWithLifecycle()
     val snackbar = LocalSnackbar.current
-    val context = LocalContext.current
+    val resources = LocalResources.current
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
     val scope = rememberCoroutineScope()
     val undoLabel = stringResource(R.string.action_undo)
@@ -130,12 +130,12 @@ fun TaskDetailSheet(
     LaunchedEffect(viewModel) {
         viewModel.effects.collect { e ->
             when (e) {
-                is TaskDetailEffect.Undo -> snackbar.show(e.message.resolve(context), undoLabel, e.durationMs) { viewModel.undo(e.snapshot) }
+                is TaskDetailEffect.Undo -> snackbar.show(e.message.resolve(resources), undoLabel, e.durationMs) { viewModel.undo(e.snapshot) }
                 is TaskDetailEffect.AllSubtasksDone -> snackbar.show(
-                    context.getString(R.string.detail_all_subtasks_done, e.parent.title),
+                    resources.getString(R.string.detail_all_subtasks_done, e.parent.title),
                     completeLabel,
                 ) { viewModel.completeParent(e.parent.id) }
-                is TaskDetailEffect.Message -> snackbar.show(e.message.resolve(context))
+                is TaskDetailEffect.Message -> snackbar.show(e.message.resolve(resources))
                 TaskDetailEffect.Dismiss -> close()
             }
         }

@@ -3,6 +3,7 @@ package app.nudge.core.ui.format
 import android.text.format.DateFormat
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import app.nudge.core.ui.R
@@ -16,18 +17,19 @@ import java.time.format.FormatStyle
 import java.util.Date
 import java.util.Locale
 
+/** The current locale, observed from the configuration so formatting updates on locale change. */
+@Composable
+@ReadOnlyComposable
+fun currentLocale(): Locale = LocalConfiguration.current.locales[0]
+
 /** Time in the user's 12/24 h preference (NFR-07). */
 @Composable
 @ReadOnlyComposable
 fun formatTime(time: LocalTime): String {
     val ctx = LocalContext.current
     val pattern = if (DateFormat.is24HourFormat(ctx)) "HH:mm" else "h:mm a"
-    return DateTimeFormatter.ofPattern(pattern, Locale.getDefault()).format(time)
+    return DateTimeFormatter.ofPattern(pattern, currentLocale()).format(time)
 }
-
-fun formatTime(context: android.content.Context, instant: Instant, zone: ZoneId): String =
-    DateFormat.getTimeFormat(context).format(Date.from(instant))
-        .let { if (instant.atZone(zone).toLocalDate() == LocalDate.now(zone)) it else "$it" }
 
 /** "Today", "Tomorrow", "Yesterday", weekday within a week, else "12 Oct". */
 @Composable
@@ -37,11 +39,11 @@ fun formatDay(date: LocalDate, today: LocalDate): String = when (date) {
     today.plusDays(1) -> stringResource(R.string.day_tomorrow)
     today.minusDays(1) -> stringResource(R.string.day_yesterday)
     else -> if (date.isAfter(today) && date.isBefore(today.plusDays(7))) {
-        DateTimeFormatter.ofPattern("EEE", Locale.getDefault()).format(date)
+        DateTimeFormatter.ofPattern("EEE", currentLocale()).format(date)
     } else if (date.year == today.year) {
-        DateTimeFormatter.ofPattern("d MMM", Locale.getDefault()).format(date)
+        DateTimeFormatter.ofPattern("d MMM", currentLocale()).format(date)
     } else {
-        DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(Locale.getDefault()).format(date)
+        DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(currentLocale()).format(date)
     }
 }
 

@@ -42,6 +42,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -74,10 +75,11 @@ internal fun SettingsScreen(
     val importDialog by viewModel.importDialog.collectAsStateWithLifecycle()
     val snackbar = LocalSnackbar.current
     val context = LocalContext.current
+    val resources = LocalResources.current
     var dialog by rememberSaveable { mutableStateOf(SettingsDialog.NONE) }
     val scroll = TopAppBarDefaults.pinnedScrollBehavior()
 
-    LaunchedEffect(viewModel) { viewModel.messages.collect { snackbar.show(it.resolve(context)) } }
+    LaunchedEffect(viewModel) { viewModel.messages.collect { snackbar.show(it.resolve(resources)) } }
 
     val exportLauncher = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri ->
         if (uri != null) viewModel.export(uri)

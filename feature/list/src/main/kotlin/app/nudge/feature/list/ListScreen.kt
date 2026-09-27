@@ -55,7 +55,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -130,7 +130,7 @@ private fun ListScreenContent(
     onBack: () -> Unit,
 ) {
     val snackbar = LocalSnackbar.current
-    val context = LocalContext.current
+    val resources = LocalResources.current
     val currentVm: ListPageViewModel = hiltViewModel(key = "list-page-${current.id}")
     var dragging by remember { mutableStateOf(false) }
     var quickAdd by remember { mutableStateOf<QuickAddTarget?>(null) }
@@ -264,7 +264,7 @@ private fun ListScreenContent(
                 onDraggingChange = { dragging = it },
                 onListDeleted = { snapshot, name ->
                     onBack()
-                    snackbar.show(context.getString(R.string.list_deleted_list, name), undo, SnackbarDispatcher.DELETE_MS) {
+                    snackbar.show(resources.getString(R.string.list_deleted_list, name), undo, SnackbarDispatcher.DELETE_MS) {
                         vm.undo(snapshot)
                     }
                 },

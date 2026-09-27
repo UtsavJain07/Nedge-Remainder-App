@@ -37,6 +37,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import app.nudge.core.ui.format.currentLocale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -212,7 +213,7 @@ private fun HealthRow(ok: Boolean, okText: String, issueText: String, onFix: (()
 /** OEM background-killer tip linking to dontkillmyapp.com (07 §6). */
 @Composable
 private fun OemTip(vendor: String, onHow: () -> Unit) {
-    val name = vendor.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+    val name = vendor.replaceFirstChar { if (it.isLowerCase()) it.titlecase(currentLocale()) else it.toString() }
     Surface(color = MaterialTheme.colorScheme.secondaryContainer, shape = MaterialTheme.shapes.medium, modifier = Modifier.fillMaxWidth()) {
         Row(
             Modifier.heightIn(min = 56.dp).padding(start = Spacing.l, end = Spacing.xs, top = Spacing.xs, bottom = Spacing.xs),

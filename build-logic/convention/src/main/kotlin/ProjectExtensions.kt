@@ -32,6 +32,8 @@ internal fun Project.configureKotlinAndroid(ext: CommonExtension) {
 }
 
 internal fun Project.configureKotlin() {
+    // Modules without tests yet (e.g. UI-only features) must not fail `./gradlew test`.
+    tasks.withType<org.gradle.api.tasks.testing.Test>().configureEach { failOnNoDiscoveredTests.set(false) }
     tasks.withType<KotlinCompilationTask<*>>().configureEach {
         val options = compilerOptions
         if (options is KotlinJvmCompilerOptions) options.jvmTarget.set(JvmTarget.JVM_17)
