@@ -105,7 +105,8 @@ class BackupRepositoryImpl @Inject constructor(
                     taskDao.upsert(importedTasks.sortedBy { it.parentId != null }.map { it.toEntity() })
                 }
                 ImportMode.MERGE -> {
-                    val localLists = listDao.all().associateBy { it.id }
+                    // Include soft-deleted rows: a newer local delete must win over an older backup row.
+                    val localLists = importedLists.mapNotNull { listDao.get(it.id) }.associateBy { it.id }
                     listDao.upsert(
                         importedLists.filter { l -> localLists[l.id]?.let { l.updatedAt.toEpochMilli() > it.updatedAt } ?: true }
                             .map { it.toEntity() },
