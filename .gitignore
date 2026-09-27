@@ -32,3 +32,9 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# Nudge (12 §1)
+keystore/
+**/build/
+.kotlin/
+.DS_Store

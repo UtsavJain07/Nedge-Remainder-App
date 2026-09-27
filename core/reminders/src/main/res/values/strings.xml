@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="channel_group_reminders">Reminders</string>
+    <string name="channel_urgent">Urgent reminders</string>
+    <string name="channel_high">High priority reminders</string>
+    <string name="channel_medium">Medium priority reminders</string>
+    <string name="channel_low">Low priority reminders</string>
+    <string name="channel_due">Due date reminders</string>
+    <string name="channel_general">General</string>
+
+    <string name="action_done">Done</string>
+    <string name="action_snooze_fmt">Snooze %1$s</string>
+    <string name="duration_hours">%1$d h</string>
+    <string name="duration_minutes">%1$d min</string>
+
+    <string name="notif_due_title">Due now: %1$s</string>
+    <string name="notif_due_at">Due %1$s</string>
+    <string name="notif_due_today">Due today</string>
+    <string name="notif_subtasks_fmt">%1$d/%2$d subtasks</string>
+    <string name="notif_reminder_n">Reminder #%1$d</string>
+    <string name="notif_morning_checkin">Morning check-in</string>
+    <string name="notif_evening_checkin">Evening check-in</string>
+    <string name="notif_test_title">Test nudge 👋</string>
+    <string name="notif_test_text">Reminders are working. You\'ll be nudged like this until tasks are done.</string>
+    <plurals name="notif_summary_title">
+        <item quantity="one">%1$d task needs you</item>
+        <item quantity="other">%1$d tasks need you</item>
+    </plurals>
+
+    <string name="priority_urgent">Urgent</string>
+    <string name="priority_high">High</string>
+    <string name="priority_medium">Medium</string>
+    <string name="priority_low">Low</string>
+    <string name="priority_none">None</string>
+</resources>
