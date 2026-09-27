@@ -71,6 +71,9 @@ class TaskRepositoryImpl @Inject constructor(
                     ?: throw IllegalMoveException("Parent $parentId not found")
                 if (parent.parentId != null) throw IllegalMoveException("Max nesting depth is 1")
                 if (parent.listId != draft.listId) throw IllegalMoveException("Parent must be in the same list")
+                // 06 §5 rule 6: an open subtask must never hide under a completed or deleted parent.
+                if (parent.deletedAt != null) throw IllegalMoveException("Parent was deleted")
+                if (parent.isCompleted) throw IllegalMoveException("Cannot add a subtask to a completed task")
             }
             // FR-13: top-level at the chosen position; subtasks always at the bottom.
             val position = if (parentId != null) InsertPosition.BOTTOM else draft.position
@@ -113,8 +116,22 @@ class TaskRepositoryImpl @Inject constructor(
         db.withTransaction {
             val task = requireTask(op.taskId)
             val listTasks = dao.allInList(task.listId).map { it.toDomain() }
-            val targetTopMin = (op as? MoveOperation.ToList)?.let { dao.minSortOrder(it.listId, null) }
-            writeChanges(MovePlanner.plan(op, listTasks, clock.now(), targetTopMin))
+            val toList = op as? MoveOperation.ToList
+            if (toList != null) {
+                val target = db.taskListDao().get(toList.listId)
+                if (target == null || target.deletedAt != null) throw IllegalMoveException("Target list not found")
+            }
+            val targetTopMin = toList?.let { dao.minSortOrder(it.listId, null) }
+            val now = clock.now()
+            val planned = MovePlanner.plan(op, listTasks, now, targetTopMin)
+            // Soft-deleted children follow their parent so Undo of the delete stays consistent.
+            val deletedChildren = if (toList != null) {
+                dao.allChildren(task.id).map { it.toDomain() }.filter { it.deletedAt != null && it.listId != toList.listId }
+                    .map { it.copy(listId = toList.listId, updatedAt = now) }
+            } else {
+                emptyList()
+            }
+            writeChanges(planned + deletedChildren)
         }
     }
 
@@ -127,7 +144,7 @@ class TaskRepositoryImpl @Inject constructor(
 
     override suspend fun restore(snapshot: UndoSnapshot) = io {
         db.withTransaction {
-            if (snapshot.createdTaskIds.isNotEmpty()) dao.hardDelete(snapshot.createdTaskIds)
+            snapshot.createdTaskIds.chunked(SQL_CHUNK).forEach { dao.hardDelete(it) }
             val now = clock.now()
             // Parents before children so the parent_id FK is satisfied.
             val rows = snapshot.tasksBefore.sortedBy { it.parentId != null }.map { it.copy(updatedAt = now).toEntity() }
@@ -180,7 +197,7 @@ class TaskRepositoryImpl @Inject constructor(
     /** Upserts [changed] and returns the snapshot of their previous rows. Call inside a transaction. */
     private suspend fun writeChanges(changed: List<Task>): UndoSnapshot {
         if (changed.isEmpty()) return UndoSnapshot.EMPTY
-        val before = dao.getMany(changed.map { it.id }).map { it.toDomain() }
+        val before = changed.map { it.id }.chunked(SQL_CHUNK).flatMap { dao.getMany(it) }.map { it.toDomain() }
         dao.upsert(changed.sortedBy { it.parentId != null }.map { it.toEntity() })
         return UndoSnapshot(tasksBefore = before)
     }
@@ -189,4 +206,9 @@ class TaskRepositoryImpl @Inject constructor(
         dao.get(id)?.toDomain()?.takeIf { it.deletedAt == null } ?: throw NoSuchElementException("Task $id not found")
 
     private suspend fun <T> io(block: suspend () -> T): T = withContext(dispatchers.io) { block() }
+
+    companion object {
+        /** Stay under SQLite's 999 bound-variable limit on API 26–29. */
+        internal const val SQL_CHUNK = 900
+    }
 }

@@ -26,6 +26,10 @@ interface TaskDao {
     @Query("SELECT * FROM task WHERE parent_id = :parentId AND deleted_at IS NULL ORDER BY sort_order")
     suspend fun children(parentId: String): List<TaskEntity>
 
+    /** Children including soft-deleted ones. */
+    @Query("SELECT * FROM task WHERE parent_id = :parentId")
+    suspend fun allChildren(parentId: String): List<TaskEntity>
+
     @Query("SELECT * FROM task WHERE list_id = :listId AND deleted_at IS NULL")
     suspend fun allInList(listId: String): List<TaskEntity>
 

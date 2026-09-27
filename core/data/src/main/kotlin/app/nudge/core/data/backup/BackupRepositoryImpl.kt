@@ -111,12 +111,13 @@ class BackupRepositoryImpl @Inject constructor(
                         importedLists.filter { l -> localLists[l.id]?.let { l.updatedAt.toEpochMilli() > it.updatedAt } ?: true }
                             .map { it.toEntity() },
                     )
-                    val localTasks = taskDao.getMany(importedTasks.map { it.id }).associateBy { it.id }
+                    val localTasks = importedTasks.map { it.id }.chunked(SQL_CHUNK).flatMap { taskDao.getMany(it) }.associateBy { it.id }
                     val winners = importedTasks.filter { t ->
                         localTasks[t.id]?.let { t.updatedAt.toEpochMilli() > it.updatedAt } ?: true
                     }
                     // Keep merged parents valid: a local parent may have become a subtask.
-                    val existingParents = taskDao.getMany(winners.mapNotNull { it.parentId }).associateBy { it.id }
+                    val existingParents = winners.mapNotNull { it.parentId }.distinct().chunked(SQL_CHUNK).flatMap { taskDao.getMany(it) }
+                        .associateBy { it.id }
                     val safe = winners.map { t ->
                         val p = t.parentId?.let { existingParents[it] }
                         if (t.parentId != null && p != null && p.parentId != null) t.copy(parentId = null) else t
@@ -159,6 +160,9 @@ class BackupRepositoryImpl @Inject constructor(
     companion object {
         const val FORMAT = "nudge-backup"
         const val VERSION = 1
+
+        /** Stay under SQLite's 999 bound-variable limit on API 26–29. */
+        private const val SQL_CHUNK = 900
     }
 }
 

@@ -517,6 +517,7 @@ private fun SubtaskList(state: TaskDetailUiState, listColor: Color, vm: TaskDeta
                 }
             }
         }
+        if (state.task?.isCompleted == true) return@Column
         HorizontalDivider(Modifier.padding(vertical = Spacing.xs), color = MaterialTheme.colorScheme.outlineVariant)
         TextField(
             value = newTitle,

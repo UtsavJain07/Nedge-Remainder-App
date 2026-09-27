@@ -88,11 +88,14 @@ class ReminderSchedulerImpl @Inject constructor(
     /** 07 §5.1. Caller must hold the lock. */
     internal suspend fun armNextAlarmLocked() {
         val earliest = tasks.earliestNextReminder()
-        if (earliest == null) {
+        val paused = settings.settings.first().reminders.pausedUntil
+        if (earliest == null || paused == java.time.Instant.MAX) {
             alarms.cancel()
             return
         }
-        alarms.set(maxOf(earliest, clock.now().plusSeconds(1)))
+        // While paused, never wake before the pause ends (avoids a 1 s re-arm loop on stale rows).
+        val floor = maxOf(clock.now().plusSeconds(1), paused ?: java.time.Instant.MIN)
+        alarms.set(maxOf(earliest, floor))
     }
 
     private fun shouldClearNotification(t: Task, s: app.nudge.core.model.ReminderSettings, now: java.time.Instant): Boolean =

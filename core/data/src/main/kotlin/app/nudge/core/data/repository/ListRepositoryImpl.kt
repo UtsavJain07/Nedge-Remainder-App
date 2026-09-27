@@ -104,7 +104,7 @@ class ListRepositoryImpl @Inject constructor(
             val tasks = taskDao.allInList(id).map { it.toDomain() }
             val now = clock.now().toEpochMilli()
             listDao.softDelete(id, now)
-            if (tasks.isNotEmpty()) taskDao.softDelete(tasks.map { it.id }, now)
+            tasks.map { it.id }.chunked(TaskRepositoryImpl.SQL_CHUNK).forEach { taskDao.softDelete(it, now) }
             UndoSnapshot(tasksBefore = tasks, listsBefore = listOf(list))
         }
     }
@@ -113,7 +113,7 @@ class ListRepositoryImpl @Inject constructor(
         db.withTransaction {
             val now = clock.now()
             listDao.upsert(snapshot.listsBefore.map { it.copy(updatedAt = now).toEntity() })
-            if (snapshot.createdTaskIds.isNotEmpty()) taskDao.hardDelete(snapshot.createdTaskIds)
+            snapshot.createdTaskIds.chunked(TaskRepositoryImpl.SQL_CHUNK).forEach { taskDao.hardDelete(it) }
             val rows = snapshot.tasksBefore.sortedBy { it.parentId != null }.map { it.copy(updatedAt = now).toEntity() }
             if (rows.isNotEmpty()) taskDao.upsert(rows)
         }

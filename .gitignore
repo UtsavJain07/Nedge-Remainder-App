@@ -38,3 +38,4 @@ keystore/
 **/build/
 .kotlin/
 .DS_Store
+.claude/worktrees/
