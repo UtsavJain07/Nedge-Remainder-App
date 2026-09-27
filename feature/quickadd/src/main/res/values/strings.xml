@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="quickadd_placeholder">What do you need to do?</string>
+    <string name="quickadd_subtask_of">Subtask of \"%1$s\"</string>
+    <string name="quickadd_date">Date</string>
+    <string name="quickadd_clear_date">Clear date</string>
+    <string name="quickadd_reminder_fmt">Reminder: %1$s</string>
+    <string name="quickadd_notes">Notes</string>
+    <string name="quickadd_notes_placeholder">Add notes</string>
+    <string name="quickadd_save">Save</string>
+    <string name="quickadd_discard_title">Discard task?</string>
+    <string name="quickadd_discard">Discard</string>
+    <string name="quickadd_keep_editing">Keep editing</string>
+    <string name="quickadd_error">Something went wrong. Try again.</string>
+</resources>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_undo">Undo</string>
+    <string name="action_complete">Complete</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="detail_more">More options</string>
+    <string name="detail_move_to">Move to…</string>
+    <string name="detail_snooze">Snooze</string>
+    <string name="detail_delete">Delete</string>
+    <string name="detail_priority">Priority</string>
+    <string name="detail_progress">Progress</string>
+    <string name="detail_progress_calculated">Calculated from subtasks</string>
+    <string name="detail_progress_a11y">%1$d percent</string>
+    <string name="detail_repeats">Repeats: %1$s</string>
+    <string name="detail_repeats_default">Repeats: %1$s (%2$s default)</string>
+    <string name="detail_next_nudge">Next nudge: %1$s (%2$s)</string>
+    <string name="detail_next_none">No reminders scheduled</string>
+    <string name="detail_next_none_done">Completed — no more nudges</string>
+    <string name="detail_next_paused">Reminders are paused</string>
+    <string name="detail_snoozed_until">Snoozed until %1$s</string>
+    <string name="snooze_15m">15 min</string>
+    <string name="snooze_1h">1 h</string>
+    <string name="snooze_3h">3 h</string>
+    <string name="snooze_tomorrow">Tomorrow</string>
+    <string name="snooze_pick">Pick…</string>
+    <plurals name="detail_nudged">
+        <item quantity="one">Nudged %1$d time since %2$s</item>
+        <item quantity="other">Nudged %1$d times since %2$s</item>
+    </plurals>
+    <string name="detail_due">Due date</string>
+    <string name="detail_add_due">Add due date</string>
+    <string name="detail_clear_due">Clear due date</string>
+    <string name="detail_subtasks">Subtasks</string>
+    <string name="detail_add_subtask">Add subtask</string>
+    <string name="detail_notes">Notes</string>
+    <string name="detail_add_notes">Add notes</string>
+    <string name="detail_footer">Created %1$s · Updated %2$s</string>
+    <string name="ago_just_now">just now</string>
+    <string name="ago_min">%1$d min ago</string>
+    <string name="ago_h">%1$d h ago</string>
+    <string name="ago_days">%1$d days ago</string>
+    <string name="detail_completed">Completed \'%1$s\'</string>
+    <string name="detail_deleted">Deleted \'%1$s\'</string>
+    <string name="detail_moved">Moved to \'%1$s\'</string>
+    <string name="detail_all_subtasks_done">All subtasks done — Complete \'%1$s\'?</string>
+    <string name="detail_snooze_past">Pick a time in the future</string>
+</resources>

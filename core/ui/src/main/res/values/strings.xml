@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="day_today">Today</string>
+    <string name="day_tomorrow">Tomorrow</string>
+    <string name="day_yesterday">Yesterday</string>
+    <string name="relative_now">now</string>
+    <string name="relative_in_min">in %1$d min</string>
+    <string name="relative_in_h">in %1$d h</string>
+    <string name="relative_in_h_min">in %1$d h %2$d min</string>
+    <string name="relative_in_days">in %1$d days</string>
+
+    <string name="state_completed">Completed</string>
+    <string name="state_not_completed">Not completed</string>
+    <string name="a11y_mark_completed">Mark completed</string>
+    <string name="a11y_mark_not_completed">Mark not completed</string>
+    <string name="a11y_priority">%1$s priority</string>
+    <string name="a11y_percent">%1$d percent</string>
+    <string name="a11y_due">due %1$s</string>
+    <plurals name="a11y_subtasks">
+        <item quantity="one">%1$d of %2$d subtask done</item>
+        <item quantity="other">%1$d of %2$d subtasks done</item>
+    </plurals>
+    <string name="a11y_expand">Expand subtasks</string>
+    <string name="a11y_collapse">Collapse subtasks</string>
+    <string name="a11y_add_subtask">Add subtask to %1$s</string>
+    <string name="a11y_open_details">Open details for %1$s</string>
+    <string name="meta_snoozed_until">until %1$s</string>
+    <string name="action_next">Next</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_ok">OK</string>
+    <string name="action_no_time">No time</string>
+    <string name="pick_time">Pick a time</string>
+    <string name="action_undo">Undo</string>
+    <string name="list_editor_placeholder">List name</string>
+    <string name="list_editor_name">Name</string>
+    <string name="list_editor_color">Color</string>
+    <string name="list_editor_icon">Icon</string>
+    <string name="list_editor_create">Create</string>
+    <string name="list_editor_save">Save</string>
+</resources>

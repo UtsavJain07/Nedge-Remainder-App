@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_undo">Undo</string>
+    <string name="action_complete">Complete</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_back">Back</string>
+    <string name="list_sort">Sort</string>
+    <string name="list_more">More options</string>
+    <string name="list_add_task">New task</string>
+    <string name="list_rename_color">Rename, color &amp; icon</string>
+    <string name="list_delete">Delete list</string>
+    <string name="list_delete_all_completed">Delete all completed</string>
+    <string name="list_delete_completed_title">Delete all completed tasks in this list?</string>
+    <plurals name="list_delete_confirm">
+        <item quantity="one">Delete \'%1$s\' and its %2$d task?</item>
+        <item quantity="other">Delete \'%1$s\' and its %2$d tasks?</item>
+    </plurals>
+    <string name="sort_my_order">My order</string>
+    <string name="sort_priority">Priority</string>
+    <string name="sort_due_date">Due date</string>
+    <string name="list_sort_tip">Switch to My order to rearrange</string>
+    <string name="list_empty_title">Nothing here yet</string>
+    <string name="list_empty_body">Tap + to add a task.</string>
+    <string name="list_all_done">All done! 🎉</string>
+    <string name="list_completed_header">Completed (%1$d)</string>
+    <string name="list_completed_menu">Completed section options</string>
+    <string name="list_completed">Completed \'%1$s\'</string>
+    <string name="list_deleted_task">Deleted \'%1$s\'</string>
+    <string name="list_deleted_completed">Deleted completed tasks</string>
+    <string name="list_deleted_list">List \'%1$s\' deleted</string>
+    <string name="list_moved_into">Moved into \'%1$s\'</string>
+    <string name="list_moved_to_list">Moved to \'%1$s\'</string>
+    <string name="list_moved_top">Moved to top level</string>
+    <string name="list_move_rejected">That move isn\'t possible</string>
+    <string name="list_all_subtasks_done">All subtasks done — Complete \'%1$s\'?</string>
+    <string name="list_last_cannot_delete">The last list can\'t be deleted</string>
+    <string name="list_invalid_name">Enter a list name (up to 40 characters)</string>
+    <string name="menu_edit">Edit</string>
+    <string name="menu_priority">Priority</string>
+    <string name="menu_snooze">Snooze</string>
+    <string name="menu_make_subtask">Make subtask of</string>
+    <string name="menu_top_level">Move to top level</string>
+    <string name="menu_back">Back</string>
+    <string name="snooze_15m">15 min</string>
+    <string name="snooze_1h">1 hour</string>
+    <string name="snooze_3h">3 hours</string>
+    <string name="snooze_tomorrow">Tomorrow morning</string>
+    <string name="a11y_move_up">Move up</string>
+    <string name="a11y_move_down">Move down</string>
+    <string name="a11y_make_subtask_of">Make subtask of %1$s</string>
+    <string name="a11y_move_top_level">Move to top level</string>
+</resources>

@@ -58,3 +58,11 @@ class ReorderListsUseCase @Inject constructor(private val lists: ListRepository)
         lists.reorder(movedId, orderedIds.getOrNull(idx - 1), orderedIds.getOrNull(idx + 1))
     }
 }
+
+/**
+ * Restores undo snapshots on the application scope, so Undo still works after the screen that made
+ * the change is gone (e.g. "List deleted — Undo" shown on Home, 03 §4.8).
+ */
+interface UndoRunner {
+    fun restore(snapshot: UndoSnapshot)
+}

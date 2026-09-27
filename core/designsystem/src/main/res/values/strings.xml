@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="priority_urgent">Urgent</string>
+    <string name="priority_high">High</string>
+    <string name="priority_medium">Medium</string>
+    <string name="priority_low">Low</string>
+    <string name="priority_none">None</string>
+
+    <string name="state_completed">Completed</string>
+    <string name="state_not_completed">Not completed</string>
+    <string name="state_expanded">Expanded</string>
+    <string name="state_collapsed">Collapsed</string>
+
+    <string name="cadence_short_min">%1$d min</string>
+    <string name="cadence_short_h">%1$d h</string>
+    <string name="cadence_every_fmt">Every %1$s</string>
+    <string name="cadence_twice_daily">Twice daily</string>
+    <string name="cadence_off">Off</string>
+    <string name="cadence_default_fmt">Default (%1$s)</string>
+    <string name="cadence_picker_title">Repeat reminders</string>
+
+    <string name="action_fix">Fix</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="new_list">New list</string>
+    <string name="emoji_none">None</string>
+
+    <plurals name="open_count">
+        <item quantity="one">%1$d open</item>
+        <item quantity="other">%1$d open</item>
+    </plurals>
+    <string name="list_card_a11y">%1$s, %2$s, %3$d percent done</string>
+    <string name="focus_card_a11y">%1$s, %2$s priority, in %3$s</string>
+</resources>
