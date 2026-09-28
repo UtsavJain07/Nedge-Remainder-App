@@ -36,6 +36,12 @@
             </intent-filter>
         </activity>
 
+        <!-- Security: the Compose preview host (debug tooling) is exported with no permission; never ship it
+             in an installed APK. IDE previews don't need it. -->
+        <activity
+            android:name="androidx.compose.ui.tooling.PreviewActivity"
+            tools:node="remove" />
+
         <!-- WorkManager is initialized on demand with the Hilt worker factory (05 §7). -->
         <provider
             android:name="androidx.startup.InitializationProvider"

@@ -36,7 +36,6 @@ kotlinxImmutable = "0.5.2"
 materialKolor = "5.0.1"
 reorderable = "3.1.0"
 timber = "5.0.1"
-leakcanary = "2.14"
 
 # Testing
 junit4 = "4.13.2"
@@ -98,7 +97,6 @@ kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collec
 materialkolor = { module = "com.materialkolor:material-kolor", version.ref = "materialKolor" }
 reorderable = { module = "sh.calvin.reorderable:reorderable", version.ref = "reorderable" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
-leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
 
 junit4 = { module = "junit:junit", version.ref = "junit4" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
