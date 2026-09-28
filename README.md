@@ -10,6 +10,9 @@ architecture, data model, reminder engine, drag & drop, testing, release).
 
 ## Build & run
 
+**New to Android?** Follow [HOW-TO-BUILD-AND-TEST.md](HOW-TO-BUILD-AND-TEST.md): get an updated APK with
+`./scripts/build-apk.sh` and test on this Mac with `./scripts/run-on-emulator.sh`.
+
 Requirements: JDK 17, Android SDK with platform 37 (compile) / 36 (target).
 
 ```bash

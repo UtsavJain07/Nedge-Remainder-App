@@ -31,9 +31,9 @@ android {
 
     signingConfigs {
         val storePath = secret("KEYSTORE_PATH")
-        if (storePath != null && file(storePath).exists()) {
+        if (storePath != null && rootProject.file(storePath).exists()) {
             create("release") {
-                storeFile = file(storePath)
+                storeFile = rootProject.file(storePath) // relative paths resolve from the repo root
                 storePassword = secret("KEYSTORE_PASSWORD")
                 keyAlias = secret("KEY_ALIAS")
                 keyPassword = secret("KEY_PASSWORD")

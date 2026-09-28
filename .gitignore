@@ -39,3 +39,4 @@ keystore/
 .kotlin/
 .DS_Store
 .claude/worktrees/
+dist/
