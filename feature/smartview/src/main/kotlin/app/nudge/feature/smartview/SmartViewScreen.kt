@@ -55,9 +55,9 @@ import app.nudge.core.designsystem.component.HapticEvent
 import app.nudge.core.designsystem.component.ListIcon
 import app.nudge.core.designsystem.component.rememberNudgeHaptics
 import app.nudge.core.designsystem.theme.Spacing
+import app.nudge.core.designsystem.theme.centeringPadding
 import app.nudge.core.domain.usecase.TaskGroup
 import app.nudge.core.model.SmartViewType
-import app.nudge.core.model.TapAction
 import app.nudge.core.model.effectiveCadence
 import app.nudge.core.ui.nav.LocalNavAnimatedVisibilityScope
 import app.nudge.core.ui.snackbar.LocalSnackbar
@@ -137,7 +137,7 @@ fun SmartViewScreen(
                 )
             }
             LazyColumn(
-                contentPadding = PaddingValues(bottom = Spacing.xxl),
+                contentPadding = PaddingValues(start = centeringPadding(), end = centeringPadding(), bottom = Spacing.xxl),
                 modifier = Modifier.fillMaxSize().testTag("smart_view_list"),
             ) {
                 state.groups.forEach { group ->
@@ -150,14 +150,6 @@ fun SmartViewScreen(
                     }
                     items(group.tasks, key = { "$groupKey-${it.task.id}" }, contentType = { "task" }) { item ->
                         val task = item.task
-                        val tap = {
-                            if (state.settings.tapAction == TapAction.OPEN_DETAILS) {
-                                detailTaskId = task.id
-                            } else {
-                                haptics.perform(HapticEvent.COMPLETE)
-                                viewModel.onComplete(task.id, task.title)
-                            }
-                        }
                         TaskRow(
                             ui = TaskRowUi(
                                 task = task,
@@ -174,7 +166,7 @@ fun SmartViewScreen(
                             today = today,
                             now = now,
                             zone = zone,
-                            onTap = tap,
+                            onTap = { detailTaskId = task.id },
                             onToggleComplete = {
                                 haptics.perform(HapticEvent.COMPLETE)
                                 viewModel.onComplete(task.id, task.title)

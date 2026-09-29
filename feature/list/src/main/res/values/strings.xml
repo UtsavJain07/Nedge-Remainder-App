@@ -8,7 +8,7 @@
     <string name="list_sort">Sort</string>
     <string name="list_more">More options</string>
     <string name="list_add_task">New task</string>
-    <string name="list_rename_color">Rename, color &amp; icon</string>
+    <string name="list_rename_color">Rename &amp; color</string>
     <string name="list_delete">Delete list</string>
     <string name="list_delete_all_completed">Delete all completed</string>
     <string name="list_delete_completed_title">Delete all completed tasks in this list?</string>

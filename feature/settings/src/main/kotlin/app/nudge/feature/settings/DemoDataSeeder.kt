@@ -50,20 +50,20 @@ class DemoDataSeeder @Inject constructor(
             ).id
         }
 
-        val work = createList("Work", ListColors.presets[0], "💼").id
+        val work = createList("Work", ListColors.presets[0], null).id
         task(work, "Fix login crash on Android 16", Priority.URGENT, notes = "Repro: cold start → tap Sign in.", dueInDays = 0, dueTime = LocalTime.of(17, 0))
         task(work, "Prepare Q4 roadmap slides", Priority.HIGH, dueInDays = 1)
         task(work, "Reply to design review comments", Priority.MEDIUM)
         task(work, "Book the team offsite venue", Priority.LOW, dueInDays = 5)
 
-        val home = createList("Home", ListColors.presets[6], "🏠").id
+        val home = createList("Home", ListColors.presets[6], null).id
         task(home, "Renew car insurance", Priority.HIGH, dueInDays = -1)
         task(home, "Pay electricity bill", Priority.HIGH, dueInDays = 0)
         task(home, "Buy groceries", Priority.MEDIUM, notes = "Milk, eggs, spinach, coffee beans")
         task(home, "Water the plants", Priority.LOW)
         task(home, "Call mom")
 
-        val reading = createList("Reading", ListColors.presets[9], "📚").id
+        val reading = createList("Reading", ListColors.presets[9], null).id
         val books = task(reading, "Read books", Priority.MEDIUM)
         val atomicHabits = task(reading, "Atomic Habits", parentId = books)
         updateTask(atomicHabits, TaskPatch(progress = 50))

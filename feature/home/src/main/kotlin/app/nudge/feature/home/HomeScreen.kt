@@ -21,8 +21,21 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.text.TextAutoSize
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.sp
+import app.nudge.core.designsystem.theme.AdaptiveWidth
+import app.nudge.core.designsystem.theme.centeringPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
@@ -190,19 +203,26 @@ fun HomeScreen(nav: HomeNavigation, viewModel: HomeViewModel = hiltViewModel()) 
                 modifier = Modifier.pressScale(interaction, 0.9f).testTag("home_fab"),
             )
         },
-        contentWindowInsets = WindowInsets(0, 0, 0, 0),
+        // Side and bottom insets (landscape nav bar, cutouts); the grid itself stops below the status bar.
+        contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom),
     ) { padding ->
+        val layoutDirection = LocalLayoutDirection.current
+        val side = centeringPadding(AdaptiveWidth.dashboard)
         LazyVerticalGrid(
-            columns = GridCells.Adaptive(160.dp),
+            // 148 dp keeps two columns on 360 dp phones and grows to 5–6 columns on tablets.
+            columns = GridCells.Adaptive(148.dp),
             state = gridState,
             contentPadding = PaddingValues(
-                start = Spacing.screenPadding,
-                end = Spacing.screenPadding,
-                bottom = padding.calculateBottomPadding() + 104.dp,
+                start = padding.calculateStartPadding(layoutDirection) + Spacing.screenPadding + side,
+                end = padding.calculateEndPadding(layoutDirection) + Spacing.screenPadding + side,
+                bottom = padding.calculateBottomPadding() + 88.dp,
             ),
             horizontalArrangement = Arrangement.spacedBy(Spacing.cardGap),
             verticalArrangement = Arrangement.spacedBy(Spacing.cardGap),
-            modifier = Modifier.fillMaxSize().testTag("home_grid"),
+            modifier = Modifier
+                .fillMaxSize()
+                .windowInsetsPadding(WindowInsets.statusBars)
+                .testTag("home_grid"),
         ) {
             item(key = "header", span = { GridItemSpan(maxLineSpan) }, contentType = "header") {
                 Header(state.now, viewModel, nav)
@@ -246,11 +266,22 @@ fun HomeScreen(nav: HomeNavigation, viewModel: HomeViewModel = hiltViewModel()) 
                 }
             }
             if (model != null) {
-                item(key = "smart-today", contentType = "smart") {
-                    SmartViewCard(Icons.Rounded.Today, stringResource(R.string.home_today), model.todayCount) { nav.openSmartView(SmartViewType.TODAY) }
-                }
-                item(key = "smart-all", contentType = "smart") {
-                    SmartViewCard(Icons.AutoMirrored.Rounded.ListAlt, stringResource(R.string.home_all_tasks), model.allCount) { nav.openSmartView(SmartViewType.ALL) }
+                // Today / All tasks always share one row, whatever the column count.
+                item(key = "smart-views", span = { GridItemSpan(maxLineSpan) }, contentType = "smart") {
+                    Row(horizontalArrangement = Arrangement.spacedBy(Spacing.cardGap)) {
+                        SmartViewCard(
+                            Icons.Rounded.Today,
+                            stringResource(R.string.home_today),
+                            model.todayCount,
+                            Modifier.weight(1f),
+                        ) { nav.openSmartView(SmartViewType.TODAY) }
+                        SmartViewCard(
+                            Icons.AutoMirrored.Rounded.ListAlt,
+                            stringResource(R.string.home_all_tasks),
+                            model.allCount,
+                            Modifier.weight(1f),
+                        ) { nav.openSmartView(SmartViewType.ALL) }
+                    }
                 }
                 item(key = "lists-title", span = { GridItemSpan(maxLineSpan) }, contentType = "title") {
                     SectionTitle(stringResource(R.string.home_my_lists))
@@ -323,8 +354,8 @@ fun HomeScreen(nav: HomeNavigation, viewModel: HomeViewModel = hiltViewModel()) 
         ListEditorSheet(
             existing = target.list,
             defaultColor = viewModel.nextColor(),
-            onSave = { name, color, emoji ->
-                if (target.list == null) viewModel.onCreateList(name, color, emoji) else viewModel.onEditList(target.list.id, name, color, emoji)
+            onSave = { name, color ->
+                if (target.list == null) viewModel.onCreateList(name, color) else viewModel.onEditList(target.list.id, name, color)
             },
             onDismiss = { editor = null },
         )
@@ -359,7 +390,6 @@ private fun Header(now: Instant, vm: HomeViewModel, nav: HomeNavigation) {
     Row(
         Modifier
             .fillMaxWidth()
-            .windowInsetsPadding(WindowInsets.statusBars)
             .padding(top = Spacing.l, bottom = Spacing.s),
         verticalAlignment = Alignment.Top,
     ) {
@@ -372,7 +402,7 @@ private fun Header(now: Instant, vm: HomeViewModel, nav: HomeNavigation) {
                 },
         ) {
             AnimatedContent(part, transitionSpec = { (fadeIn() + slideInVertically { it / 2 }) togetherWith fadeOut() }, label = "greeting") { p ->
-                Text(
+                BasicText(
                     stringResource(
                         when (p) {
                             DayPart.MORNING -> R.string.greeting_morning
@@ -381,8 +411,10 @@ private fun Header(now: Instant, vm: HomeViewModel, nav: HomeNavigation) {
                             DayPart.NIGHT -> R.string.greeting_night
                         },
                     ),
-                    style = EmphasizedType.headlineMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    style = EmphasizedType.headlineMedium.copy(color = MaterialTheme.colorScheme.onSurface),
+                    maxLines = 1,
+                    // Small phones / large fonts: shrink rather than wrap the emoji onto its own line.
+                    autoSize = TextAutoSize.StepBased(minFontSize = 18.sp, maxFontSize = EmphasizedType.headlineMedium.fontSize),
                 )
             }
             Text(
@@ -430,22 +462,32 @@ private fun StaggerIn(index: Int, content: @Composable () -> Unit) {
 }
 
 @Composable
-private fun SmartViewCard(icon: ImageVector, title: String, count: Int, onClick: () -> Unit) {
+private fun SmartViewCard(icon: ImageVector, title: String, count: Int, modifier: Modifier = Modifier, onClick: () -> Unit) {
     val interaction = remember { MutableInteractionSource() }
     Surface(
         color = MaterialTheme.colorScheme.secondaryContainer,
         shape = MaterialTheme.shapes.medium,
-        modifier = Modifier
+        modifier = modifier
             .pressScale(interaction)
             .clip(MaterialTheme.shapes.medium)
             .clickable(interactionSource = interaction, indication = androidx.compose.material3.ripple(), role = Role.Button, onClick = onClick)
             .semantics(mergeDescendants = true) { contentDescription = "$title, $count" },
     ) {
-        Row(Modifier.padding(Spacing.l).heightIn(min = 32.dp), verticalAlignment = Alignment.CenterVertically) {
-            Icon(icon, null, tint = MaterialTheme.colorScheme.onSecondaryContainer)
-            Spacer(Modifier.width(Spacing.m))
-            Text(title, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSecondaryContainer, modifier = Modifier.weight(1f))
-            Text("$count", style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onSecondaryContainer)
+        // Icon + count on top, title below (Apple Reminders style): fits narrow phones and large fonts.
+        Column(Modifier.padding(horizontal = Spacing.l, vertical = Spacing.m)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(icon, null, tint = MaterialTheme.colorScheme.onSecondaryContainer)
+                Spacer(Modifier.weight(1f))
+                Text("$count", style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onSecondaryContainer)
+            }
+            Spacer(Modifier.height(Spacing.xs))
+            Text(
+                title,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
         }
     }
 }

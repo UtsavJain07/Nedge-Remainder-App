@@ -17,7 +17,6 @@ import app.nudge.core.model.InsertPosition
 import app.nudge.core.model.Priority
 import app.nudge.core.model.ReminderCadence
 import app.nudge.core.model.ReminderSettings
-import app.nudge.core.model.TapAction
 import app.nudge.core.model.ThemeMode
 import app.nudge.core.model.UserSettings
 import kotlinx.coroutines.flow.Flow
@@ -54,7 +53,6 @@ class SettingsDataSource @Inject constructor(
         val theme = stringPreferencesKey("theme")
         val dynamicColor = booleanPreferencesKey("dynamic_color")
         val pureBlack = booleanPreferencesKey("pure_black")
-        val tapAction = stringPreferencesKey("tap_action")
         val newTaskPosition = stringPreferencesKey("new_task_position")
         val defaultPriority = intPreferencesKey("default_priority")
         val haptics = booleanPreferencesKey("haptics")
@@ -84,7 +82,6 @@ class SettingsDataSource @Inject constructor(
             theme = this[Keys.theme].toEnum(d.theme),
             dynamicColor = this[Keys.dynamicColor] ?: d.dynamicColor,
             pureBlack = this[Keys.pureBlack] ?: d.pureBlack,
-            tapAction = this[Keys.tapAction].toEnum(TapAction.COMPLETE),
             newTaskPosition = this[Keys.newTaskPosition].toEnum(InsertPosition.TOP),
             defaultPriority = this[Keys.defaultPriority]?.let(Priority::fromLevel) ?: d.defaultPriority,
             haptics = this[Keys.haptics] ?: d.haptics,
@@ -111,7 +108,6 @@ class SettingsDataSource @Inject constructor(
         this[Keys.theme] = s.theme.name
         this[Keys.dynamicColor] = s.dynamicColor
         this[Keys.pureBlack] = s.pureBlack
-        this[Keys.tapAction] = s.tapAction.name
         this[Keys.newTaskPosition] = s.newTaskPosition.name
         this[Keys.defaultPriority] = s.defaultPriority.level
         this[Keys.haptics] = s.haptics

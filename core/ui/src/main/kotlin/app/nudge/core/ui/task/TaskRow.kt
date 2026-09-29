@@ -47,7 +47,6 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.CustomAccessibilityAction
-import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.onClick
@@ -158,7 +157,8 @@ fun TaskRow(
     val indent by animateDpAsState(if (isSub) Spacing.subtaskIndent else 0.dp, spring(0.8f, 800f), label = "indent")
 
     val a11y = rowDescription(ui, today)
-    val completeLabel = stringResource(if (ui.checked) R.string.a11y_mark_not_completed else R.string.a11y_mark_completed)
+    val openLabel = stringResource(R.string.a11y_open_details, task.title)
+    val checkboxLabel = stringResource(if (ui.checked) R.string.a11y_mark_not_completed else R.string.a11y_mark_completed)
     val stateText = stringResource(if (ui.checked) R.string.state_completed else R.string.state_not_completed)
     // Springs overshoot (A5); negative corner / elevation values crash, so clamp.
     val shape = androidx.compose.foundation.shape.RoundedCornerShape(corner.coerceAtLeast(0.dp))
@@ -186,7 +186,7 @@ fun TaskRow(
                 .semantics(mergeDescendants = true) {
                     contentDescription = a11y
                     stateDescription = stateText
-                    onClick(label = completeLabel) {
+                    onClick(label = openLabel) {
                         onTap()
                         true
                     }
@@ -202,7 +202,7 @@ fun TaskRow(
                 ringColor = ringColor,
                 onToggle = onToggleComplete,
                 size = if (isSub) 20.dp else 24.dp,
-                modifier = Modifier.clearAndSetSemantics { },
+                label = "$checkboxLabel: ${task.title}",
             )
             Column(Modifier.weight(1f).padding(vertical = Spacing.s)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {

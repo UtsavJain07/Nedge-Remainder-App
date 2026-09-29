@@ -8,6 +8,8 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -50,6 +52,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.CustomAccessibilityAction
@@ -64,11 +67,11 @@ import app.nudge.core.designsystem.component.highlightPulse
 import app.nudge.core.designsystem.component.rememberNudgeHaptics
 import app.nudge.core.designsystem.theme.LocalReducedMotion
 import app.nudge.core.designsystem.theme.Spacing
+import app.nudge.core.designsystem.theme.centeringPadding
 import app.nudge.core.domain.tree.CompletedHeaderUi
 import app.nudge.core.domain.tree.TaskItemUi
 import app.nudge.core.model.ListSortMode
 import app.nudge.core.model.MoveOperation
-import app.nudge.core.model.TapAction
 import app.nudge.core.model.effectiveCadence
 import app.nudge.core.ui.dnd.DndRow
 import app.nudge.core.ui.dnd.DragDropState
@@ -167,6 +170,8 @@ internal fun ListPage(
         firstFrame = false
     }
 
+    val layoutDirection = LocalLayoutDirection.current
+    val side = centeringPadding()
     Box(Modifier.fillMaxSize()) {
         if (openItems.isEmpty() && completedItems.isEmpty() && completedHeader == null) {
             EmptyState(
@@ -178,7 +183,10 @@ internal fun ListPage(
         }
         LazyColumn(
             state = listState,
+            // Wide screens: rows stay at a readable width, centered (03 §8); side insets respected in landscape.
             contentPadding = PaddingValues(
+                start = contentPadding.calculateStartPadding(layoutDirection) + side,
+                end = contentPadding.calculateEndPadding(layoutDirection) + side,
                 top = contentPadding.calculateTopPadding() + Spacing.xs,
                 bottom = contentPadding.calculateBottomPadding() + 96.dp,
             ),
@@ -208,14 +216,15 @@ internal fun ListPage(
                     completing = task.id in state.completing,
                 )
                 val a11y = accessibilityActions(item, rendered.map { it.first }, dragEnabled, vm, onDelete = { vm.onDelete(task.id, task.title) }, resources)
-                val tap = {
+                // Tapping a row opens its details; only the circle completes it.
+                val toggle = {
                     focusedKey = item.key
-                    if (settings.tapAction == TapAction.OPEN_DETAILS) {
-                        onOpenDetails(task.id)
-                    } else {
-                        if (!task.isCompleted) haptics.perform(HapticEvent.COMPLETE)
-                        vm.onToggle(task.id, task.title, task.isCompleted)
-                    }
+                    if (!task.isCompleted) haptics.perform(HapticEvent.COMPLETE)
+                    vm.onToggle(task.id, task.title, task.isCompleted)
+                }
+                val open = {
+                    focusedKey = item.key
+                    onOpenDetails(task.id)
                 }
                 val placement = Modifier.then(
                     if (isDragging) {
@@ -241,8 +250,8 @@ internal fun ListPage(
                             today = today,
                             now = now,
                             zone = zone,
-                            onTap = tap,
-                            onToggleComplete = tap,
+                            onTap = open,
+                            onToggleComplete = toggle,
                             onOpenDetails = { onOpenDetails(task.id) },
                             showAddSubtask = !task.isCompleted && depth == 0 && (item.isParent || focusedKey == item.key),
                             onAddSubtask = { onAddSubtask(task.id) },
@@ -343,7 +352,7 @@ private fun LazyListScope.completedSection(
                 today = today,
                 now = now,
                 zone = zone,
-                onTap = { vm.onToggle(task.id, task.title, task.isCompleted) },
+                onTap = { onOpenDetails(task.id) },
                 onToggleComplete = { vm.onToggle(task.id, task.title, task.isCompleted) },
                 onOpenDetails = { onOpenDetails(task.id) },
                 onToggleExpanded = { vm.onToggleExpanded(task.id, !task.isExpanded) },

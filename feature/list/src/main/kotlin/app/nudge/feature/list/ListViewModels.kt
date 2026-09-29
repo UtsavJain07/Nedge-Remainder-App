@@ -244,10 +244,10 @@ class ListPageViewModel @Inject constructor(
         }
     }
 
-    fun onEditList(name: String, color: Int, emoji: String?) {
+    fun onEditList(name: String, color: Int) {
         val id = listId.value ?: return
         viewModelScope.launch {
-            runCatching { updateList(id, name, color, EmojiChange.Set(emoji)) }
+            runCatching { updateList(id, name, color, EmojiChange.Unchanged) }
                 .onFailure { _effects.send(ListEffect.Message(UiText.Res(R.string.list_invalid_name))) }
         }
     }

@@ -11,7 +11,6 @@ import app.nudge.core.model.InsertPosition
 import app.nudge.core.model.Priority
 import app.nudge.core.model.ReminderCadence
 import app.nudge.core.model.ReminderSettings
-import app.nudge.core.model.TapAction
 import app.nudge.core.model.ThemeMode
 import app.nudge.core.model.UserSettings
 import com.google.common.truth.Truth.assertThat
@@ -28,7 +27,6 @@ class SettingsDataSourceTest : DataTestBase() {
         theme = ThemeMode.DARK,
         dynamicColor = true,
         pureBlack = true,
-        tapAction = TapAction.OPEN_DETAILS,
         newTaskPosition = InsertPosition.BOTTOM,
         defaultPriority = Priority.HIGH,
         haptics = false,

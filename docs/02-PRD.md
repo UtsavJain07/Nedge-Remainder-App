@@ -79,7 +79,7 @@ Priority: **M** = Must (v1), **S** = Should (v1 if time allows), **C** = Could (
 
 | ID | Requirement | Pri |
 |----|-------------|-----|
-| FR-30 | **Tapping a task row toggles completion** (when the setting "Tap on task" = Complete, the default). The circular checkbox also toggles. | M |
+| FR-30 | **Tapping a task row opens Task Detail; only the circular checkbox toggles completion** (v1.1). | M |
 | FR-31 | Completion animation: checkbox fills and morphs with a spring, the title strikes through left to right, and the row fades and collapses into the Completed section (`04 §6`). Haptic "confirm". A snackbar "Completed 'X'" with **Undo** shows for 4 s. | M |
 | FR-32 | Each list has a **Completed section** below the open tasks: header "Completed (n)" with a chevron, **collapsed by default**, state remembered per list. Items are ordered by `completedAt` desc. | M |
 | FR-33 | Tapping a completed task un-completes it: it returns to the open tasks at its previous `sortOrder` position and its reminders resume. | M |

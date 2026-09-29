@@ -22,7 +22,6 @@
     <string name="action_fix">Fix</string>
     <string name="action_cancel">Cancel</string>
     <string name="new_list">New list</string>
-    <string name="emoji_none">None</string>
 
     <plurals name="open_count">
         <item quantity="one">%1$d open</item>

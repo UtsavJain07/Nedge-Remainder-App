@@ -50,15 +50,15 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.nudge.core.designsystem.component.PriorityFlag
 import app.nudge.core.designsystem.component.priorityLabel
 import app.nudge.core.designsystem.theme.Spacing
+import app.nudge.core.designsystem.theme.centeredMaxWidth
 import app.nudge.core.domain.repository.ImportMode
 import app.nudge.core.model.InsertPosition
 import app.nudge.core.model.Priority
-import app.nudge.core.model.TapAction
 import app.nudge.core.model.ThemeMode
 import app.nudge.core.model.UserSettings
 import app.nudge.core.ui.snackbar.LocalSnackbar
 
-private enum class SettingsDialog { NONE, TAP_ACTION, NEW_TASK_POSITION, DEFAULT_PRIORITY, DELETE_ALL, LICENSES }
+private enum class SettingsDialog { NONE, NEW_TASK_POSITION, DEFAULT_PRIORITY, DELETE_ALL, LICENSES }
 
 /** Settings root (FR-100..FR-104, 03 §3.9). */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -99,6 +99,7 @@ internal fun SettingsScreen(
                 .fillMaxSize()
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
+                .centeredMaxWidth()
                 .padding(bottom = Spacing.xxl)
                 .testTag("settings_list"),
         ) {
@@ -115,11 +116,6 @@ internal fun SettingsScreen(
             )
 
             SettingsSectionHeader(stringResource(R.string.settings_section_behavior))
-            SettingsItem(
-                title = stringResource(R.string.settings_tap_action),
-                summary = tapActionLabel(s.tapAction),
-                onClick = { dialog = SettingsDialog.TAP_ACTION },
-            )
             SettingsItem(
                 title = stringResource(R.string.settings_new_tasks_at),
                 summary = positionLabel(s.newTaskPosition),
@@ -181,14 +177,6 @@ internal fun SettingsScreen(
 
         val dismiss = { dialog = SettingsDialog.NONE }
         when (dialog) {
-            SettingsDialog.TAP_ACTION -> ChoiceDialog(
-                title = stringResource(R.string.settings_tap_action),
-                options = TapAction.entries,
-                selected = s.tapAction,
-                label = { tapActionLabel(it) },
-                onSelect = { v -> viewModel.update { it.copy(tapAction = v) } },
-                onDismiss = dismiss,
-            )
             SettingsDialog.NEW_TASK_POSITION -> ChoiceDialog(
                 title = stringResource(R.string.settings_new_tasks_at),
                 options = InsertPosition.entries,
@@ -337,14 +325,6 @@ private fun themeLabel(mode: ThemeMode): String = stringResource(
         ThemeMode.SYSTEM -> R.string.settings_theme_system
         ThemeMode.LIGHT -> R.string.settings_theme_light
         ThemeMode.DARK -> R.string.settings_theme_dark
-    },
-)
-
-@Composable
-private fun tapActionLabel(action: TapAction): String = stringResource(
-    when (action) {
-        TapAction.COMPLETE -> R.string.settings_tap_complete
-        TapAction.OPEN_DETAILS -> R.string.settings_tap_details
     },
 )
 

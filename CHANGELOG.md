@@ -5,6 +5,18 @@ All notable changes to this project are documented here ([Keep a Changelog](http
 
 ## [Unreleased]
 
+### Changed (v1.1 review)
+- Tapping a task opens its details; only the circle completes it. The "Tap on task" setting is removed.
+- New list and New task sheets minimize to a compact bar instead of closing when dragged down, tapped
+  outside or on Back; the draft is kept and closing from the bar asks before discarding.
+- Lists are created with a name and color only (icon picker removed).
+- Layout adapts to all screen sizes: two columns on 360 dp phones, more on tablets, centered readable
+  width on tablets/landscape, safe-area insets, no content under the status bar, one-line greeting.
+
+### Fixed
+- Home content scrolled underneath the status bar.
+
+
 ### Added
 - Lists with 12 colors and emoji, reorderable on Home; default "My Tasks" list (FR-01..FR-06).
 - Tasks with notes, priority, progress, due date/time and per-task reminder cadence; Quick Add sheet

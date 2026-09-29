@@ -14,7 +14,7 @@
     <string name="home_today">Today</string>
     <string name="home_all_tasks">All tasks</string>
     <string name="home_my_lists">My lists</string>
-    <string name="home_edit_list">Rename, color &amp; icon</string>
+    <string name="home_edit_list">Rename &amp; color</string>
     <string name="home_delete_list">Delete list</string>
     <plurals name="home_delete_confirm">
         <item quantity="one">Delete \'%1$s\' and its %2$d task?</item>

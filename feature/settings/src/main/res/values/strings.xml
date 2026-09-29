@@ -55,9 +55,6 @@
 
     <!-- Behavior (FR-102) -->
     <string name="settings_section_behavior">Behavior</string>
-    <string name="settings_tap_action">Tap on task</string>
-    <string name="settings_tap_complete">Complete it</string>
-    <string name="settings_tap_details">Open details</string>
     <string name="settings_new_tasks_at">New tasks at</string>
     <string name="settings_position_top">Top of the list</string>
     <string name="settings_position_bottom">Bottom of the list</string>

@@ -9,7 +9,6 @@ data class UserSettings(
     val theme: ThemeMode = ThemeMode.SYSTEM,
     val dynamicColor: Boolean = false,
     val pureBlack: Boolean = false,
-    val tapAction: TapAction = TapAction.COMPLETE,
     val newTaskPosition: InsertPosition = InsertPosition.TOP,
     val defaultPriority: Priority = Priority.NONE,
     val haptics: Boolean = true,

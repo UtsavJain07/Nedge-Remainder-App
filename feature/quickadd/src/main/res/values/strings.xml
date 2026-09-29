@@ -12,4 +12,7 @@
     <string name="quickadd_discard">Discard</string>
     <string name="quickadd_keep_editing">Keep editing</string>
     <string name="quickadd_error">Something went wrong. Try again.</string>
+    <string name="quickadd_peek_new_task">New task</string>
+    <string name="quickadd_peek_in_list">New task in %1$s</string>
+    <string name="quickadd_peek_subtask">New subtask of \"%1$s\"</string>
 </resources>

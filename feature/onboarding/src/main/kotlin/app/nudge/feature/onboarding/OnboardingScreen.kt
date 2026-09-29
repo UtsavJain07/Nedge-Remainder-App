@@ -88,6 +88,7 @@ import app.nudge.core.designsystem.component.AnimatedCheckMark
 import app.nudge.core.designsystem.component.PriorityFlag
 import app.nudge.core.designsystem.component.priorityLabel
 import app.nudge.core.designsystem.theme.EmphasizedType
+import app.nudge.core.designsystem.theme.centeredMaxWidth
 import app.nudge.core.designsystem.theme.LocalNudgeColors
 import app.nudge.core.designsystem.theme.LocalReducedMotion
 import app.nudge.core.designsystem.theme.Spacing
@@ -194,6 +195,7 @@ private fun PageLayout(title: String, body: String?, illustration: @Composable (
         Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
+            .centeredMaxWidth(560.dp)
             .padding(horizontal = Spacing.xl),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,

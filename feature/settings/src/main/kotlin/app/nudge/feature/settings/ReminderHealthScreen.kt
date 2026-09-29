@@ -53,6 +53,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.nudge.core.designsystem.theme.EmphasizedType
+import app.nudge.core.designsystem.theme.centeredMaxWidth
 import app.nudge.core.designsystem.theme.LocalNudgeColors
 import app.nudge.core.designsystem.theme.Spacing
 import app.nudge.core.domain.reminder.ReminderHealth
@@ -116,6 +117,7 @@ internal fun ReminderHealthScreen(onBack: () -> Unit, viewModel: ReminderHealthV
                 .fillMaxSize()
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
+                .centeredMaxWidth()
                 .padding(horizontal = Spacing.screenPadding, vertical = Spacing.s),
             verticalArrangement = Arrangement.spacedBy(Spacing.s),
         ) {

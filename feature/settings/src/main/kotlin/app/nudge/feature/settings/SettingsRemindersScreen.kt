@@ -38,6 +38,7 @@ import app.nudge.core.designsystem.component.PriorityFlag
 import app.nudge.core.designsystem.component.cadenceLabel
 import app.nudge.core.designsystem.component.priorityLabel
 import app.nudge.core.designsystem.theme.LocalNudgeColors
+import app.nudge.core.designsystem.theme.centeredMaxWidth
 import app.nudge.core.designsystem.theme.Spacing
 import app.nudge.core.domain.usecase.PauseDuration
 import app.nudge.core.model.Priority
@@ -92,6 +93,7 @@ internal fun SettingsRemindersScreen(onBack: () -> Unit, onOpenHealth: () -> Uni
                 .fillMaxSize()
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
+                .centeredMaxWidth()
                 .padding(bottom = Spacing.xxl),
         ) {
             SettingsSectionHeader(stringResource(R.string.settings_section_cadence))

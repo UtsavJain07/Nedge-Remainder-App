@@ -34,7 +34,17 @@
     <string name="list_editor_placeholder">List name</string>
     <string name="list_editor_name">Name</string>
     <string name="list_editor_color">Color</string>
-    <string name="list_editor_icon">Icon</string>
     <string name="list_editor_create">Create</string>
     <string name="list_editor_save">Save</string>
+    <string name="sheet_expand">Expand</string>
+    <string name="sheet_close">Close</string>
+    <string name="sheet_tap_to_continue">Tap to continue</string>
+    <string name="sheet_minimize">Minimize</string>
+    <string name="sheet_pane">Editor</string>
+    <string name="list_editor_new_title">New list</string>
+    <string name="list_editor_edit_title">Edit list</string>
+    <string name="list_editor_discard_new">Discard this list?</string>
+    <string name="list_editor_discard_changes">Discard your changes?</string>
+    <string name="list_editor_discard">Discard</string>
+    <string name="list_editor_keep_editing">Keep editing</string>
 </resources>

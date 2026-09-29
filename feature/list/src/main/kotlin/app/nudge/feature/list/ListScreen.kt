@@ -281,7 +281,7 @@ private fun ListScreenContent(
         ListEditorSheet(
             existing = current,
             defaultColor = ListColors.DEFAULT,
-            onSave = { name, color, emoji -> currentVm.onEditList(name, color, emoji) },
+            onSave = { name, color -> currentVm.onEditList(name, color) },
             onDismiss = { editList = false },
         )
     }

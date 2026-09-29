@@ -159,7 +159,8 @@ On "Start": set `onboardingDone = true` and navigate to Home, popping Onboarding
 
 | Gesture | Result |
 |---------|--------|
-| Tap row | Toggle complete (or open details if the setting says so) |
+| Tap row | Open Task Detail (v1.1) |
+| Tap circle | Toggle complete |
 | Tap › | Open Task Detail |
 | Long-press + move | Drag (reorder / nest / un-nest) |
 | Long-press + release without moving | Context menu (`DropdownMenu` anchored to the row) |

@@ -69,6 +69,7 @@ import app.nudge.core.designsystem.component.EmptyState
 import app.nudge.core.designsystem.component.ListIcon
 import app.nudge.core.designsystem.component.PriorityFlag
 import app.nudge.core.designsystem.theme.Spacing
+import app.nudge.core.designsystem.theme.centeringPadding
 import app.nudge.core.domain.usecase.TaskWithList
 import app.nudge.core.model.TaskList
 import app.nudge.core.ui.nav.LocalNavAnimatedVisibilityScope
@@ -155,7 +156,7 @@ fun SearchScreen(
                 )
             }
             LazyColumn(
-                contentPadding = PaddingValues(bottom = Spacing.xxl),
+                contentPadding = PaddingValues(start = centeringPadding(), end = centeringPadding(), bottom = Spacing.xxl),
                 modifier = Modifier.fillMaxSize().testTag("search_results"),
             ) {
                 results.groups.forEach { group ->

@@ -30,6 +30,4 @@ enum class InsertPosition { TOP, BOTTOM }
 
 enum class ThemeMode { SYSTEM, LIGHT, DARK }
 
-enum class TapAction { COMPLETE, OPEN_DETAILS }
-
 enum class SmartViewType { TODAY, ALL }

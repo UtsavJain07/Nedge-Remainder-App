@@ -6,6 +6,15 @@ These documents are the **single source of truth** for building the app. They ar
 
 ---
 
+## 0. Changes after v1.0 review (v1.1) — these override the documents below
+
+| # | Change | Replaces |
+|---|--------|----------|
+| 1 | **Adaptive layout:** 2-column Home grid from 360 dp phones up to 5–6 columns on tablets; Today/All always share one row; reading content capped at 720 dp (Home 1040 dp) and centered on tablets/landscape; safe-area insets respected; nothing scrolls under the status bar; greeting shrinks instead of wrapping. | 03 §8, 03 §3.2 grid (`Adaptive(160dp)`) |
+| 2 | **Tapping a task opens its details; only the circle completes it.** The "Tap on task" setting is removed. | FR-30, FR-102 (tap setting), 01 §4.4 #1, 03 §3.3 row gestures |
+| 3 | **Lists have no icon picker** (name + color only). Existing emojis still display. | FR-02, 03 §3.6 |
+| 4–5 | **New list and New task sheets minimize instead of closing** when dragged down, tapped outside or on Back; the draft is kept in a compact bar (tap / swipe up to continue). From the bar, closing asks to discard unsaved input. | 03 §3.4, 03 §3.6 |
+
 ## 1. Reading order
 
 | # | Document | What it answers | Read when |

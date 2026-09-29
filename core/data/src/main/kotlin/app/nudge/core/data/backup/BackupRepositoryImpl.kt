@@ -20,7 +20,6 @@ import app.nudge.core.model.Priority
 import app.nudge.core.model.ReminderCadence
 import app.nudge.core.model.ReminderSettings
 import app.nudge.core.model.ReminderState
-import app.nudge.core.model.TapAction
 import app.nudge.core.model.Task
 import app.nudge.core.model.TaskList
 import app.nudge.core.model.ThemeMode
@@ -216,7 +215,6 @@ internal data class SettingsDto(
     val theme: String = "SYSTEM",
     val dynamicColor: Boolean = false,
     val pureBlack: Boolean = false,
-    val tapAction: String = "COMPLETE",
     val newTaskPosition: String = "TOP",
     val defaultPriority: Int = 0,
     val haptics: Boolean = true,
@@ -302,7 +300,6 @@ private fun UserSettings.toDto(): SettingsDto {
         theme = theme.name,
         dynamicColor = dynamicColor,
         pureBlack = pureBlack,
-        tapAction = tapAction.name,
         newTaskPosition = newTaskPosition.name,
         defaultPriority = defaultPriority.level,
         haptics = haptics,
@@ -325,7 +322,6 @@ private fun SettingsDto.toDomain(current: UserSettings): UserSettings {
         theme = ThemeMode.entries.firstOrNull { it.name == theme } ?: current.theme,
         dynamicColor = dynamicColor,
         pureBlack = pureBlack,
-        tapAction = TapAction.entries.firstOrNull { it.name == tapAction } ?: current.tapAction,
         newTaskPosition = InsertPosition.entries.firstOrNull { it.name == newTaskPosition } ?: current.newTaskPosition,
         defaultPriority = Priority.fromLevel(defaultPriority),
         haptics = haptics,

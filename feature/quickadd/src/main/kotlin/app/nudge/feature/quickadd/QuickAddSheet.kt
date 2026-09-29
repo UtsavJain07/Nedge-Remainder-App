@@ -11,10 +11,10 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -33,22 +33,17 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -73,15 +68,16 @@ import app.nudge.core.designsystem.theme.LocalReducedMotion
 import app.nudge.core.designsystem.theme.Spacing
 import app.nudge.core.ui.format.formatDue
 import app.nudge.core.ui.picker.DueDateTimeDialogs
+import app.nudge.core.ui.sheet.MinimizableBottomSheet
+import app.nudge.core.ui.sheet.rememberMinimizableSheetController
 import app.nudge.core.ui.snackbar.LocalSnackbar
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 /**
  * Quick Add bottom sheet (03 §3.4). Enter saves and keeps the sheet open for rapid entry (FR-10).
  * [listId] null + [showListPicker] = Home entry with a list chip (FR-80). [parentId] = add subtask (FR-11).
  */
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun QuickAddSheet(
     listId: String?,
@@ -96,19 +92,7 @@ fun QuickAddSheet(
     val snackbar = LocalSnackbar.current
     val errorText = stringResource(R.string.quickadd_error)
     var confirmDiscard by remember { mutableStateOf(false) }
-    val hasText by rememberUpdatedState(viewModel.title.isNotBlank())
-    val sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true,
-        confirmValueChange = { value ->
-            if (value == SheetValue.Hidden && hasText) {
-                confirmDiscard = true
-                false
-            } else {
-                true
-            }
-        },
-    )
-    val scope = rememberCoroutineScope()
+    val controller = rememberMinimizableSheetController()
     val focus = remember { FocusRequester() }
     var flyText by remember { mutableStateOf<String?>(null) }
     var flyKey by remember { mutableIntStateOf(0) }
@@ -126,28 +110,36 @@ fun QuickAddSheet(
             }
         }
     }
-    LaunchedEffect(state.ready) { if (state.ready) runCatching { focus.requestFocus() } }
-
-    fun dismiss() {
-        if (viewModel.title.isNotBlank()) {
-            confirmDiscard = true
-        } else {
-            scope.launch { sheetState.hide() }.invokeOnCompletion { onDismiss() }
+    val peekTitle = viewModel.title.ifBlank {
+        when {
+            state.parentTitle != null -> stringResource(R.string.quickadd_peek_subtask, state.parentTitle!!)
+            state.selectedList != null -> stringResource(R.string.quickadd_peek_in_list, state.selectedList!!.name)
+            else -> stringResource(R.string.quickadd_peek_new_task)
         }
     }
 
-    ModalBottomSheet(
-        onDismissRequest = { if (hasText) confirmDiscard = true else onDismiss() },
-        sheetState = sheetState,
+    // Dragging down minimizes instead of discarding what was typed (v1.1).
+    MinimizableBottomSheet(
+        controller = controller,
+        peekTitle = peekTitle,
+        onCloseRequest = {
+            val hasText = viewModel.title.isNotBlank()
+            if (hasText) confirmDiscard = true
+            !hasText
+        },
+        onDismissed = onDismiss,
         modifier = Modifier.testTag("quick_add_sheet"),
     ) {
+        // Focus the title on open and every time the sheet is restored from its minimized bar.
+        LaunchedEffect(state.ready, controller.minimized) {
+            if (state.ready && !controller.minimized) runCatching { focus.requestFocus() }
+        }
         Column(
             Modifier
                 .fillMaxWidth()
-                .widthIn(max = 640.dp)
+                .verticalScroll(rememberScrollState())
                 .padding(horizontal = Spacing.sheetPadding)
-                .padding(bottom = Spacing.l)
-                .imePadding(),
+                .padding(bottom = Spacing.l),
             verticalArrangement = Arrangement.spacedBy(Spacing.m),
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -278,7 +270,7 @@ fun QuickAddSheet(
                 TextButton(onClick = {
                     confirmDiscard = false
                     viewModel.onTitle("")
-                    scope.launch { sheetState.hide() }.invokeOnCompletion { onDismiss() }
+                    controller.close()
                 }) { Text(stringResource(R.string.quickadd_discard)) }
             },
             dismissButton = { TextButton(onClick = { confirmDiscard = false }) { Text(stringResource(R.string.quickadd_keep_editing)) } },

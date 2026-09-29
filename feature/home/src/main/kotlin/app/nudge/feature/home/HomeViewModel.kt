@@ -94,14 +94,14 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun onCreateList(name: String, color: Int, emoji: String?) {
+    fun onCreateList(name: String, color: Int) {
         viewModelScope.launch {
-            runCatching { createList(name, color, emoji) }.onFailure { _effects.send(HomeEffect.Message(UiText.Res(R.string.home_invalid_name))) }
+            runCatching { createList(name, color, emoji = null) }.onFailure { _effects.send(HomeEffect.Message(UiText.Res(R.string.home_invalid_name))) }
         }
     }
 
-    fun onEditList(id: String, name: String, color: Int, emoji: String?) {
-        viewModelScope.launch { runCatching { updateList(id, name, color, EmojiChange.Set(emoji)) } }
+    fun onEditList(id: String, name: String, color: Int) {
+        viewModelScope.launch { runCatching { updateList(id, name, color, EmojiChange.Unchanged) } }
     }
 
     fun onDeleteList(list: TaskList) {

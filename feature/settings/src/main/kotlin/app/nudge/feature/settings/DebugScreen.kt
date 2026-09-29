@@ -28,6 +28,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import app.nudge.core.common.Clock
 import app.nudge.core.designsystem.theme.Spacing
+import app.nudge.core.designsystem.theme.centeredMaxWidth
 import app.nudge.core.domain.reminder.ReminderDebugTools
 import app.nudge.core.domain.reminder.ScheduledReminder
 import app.nudge.core.ui.format.formatInstant
@@ -125,6 +126,7 @@ internal fun DebugScreen(onBack: () -> Unit, viewModel: DebugViewModel = hiltVie
                 .fillMaxSize()
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
+                .centeredMaxWidth()
                 .padding(bottom = Spacing.xxl),
         ) {
             SettingsSectionHeader(stringResource(R.string.debug_section_engine))
